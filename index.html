@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حرفة | منصة الحرفيين والخدمات المنزلية في مصر</title>
+<meta name="theme-color" content="#16834A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/lucide@0.453.0/dist/umd/lucide.min.js"></script>
+<style>
+/* ===================== 12. أنماط CSS ===================== */
+:root{--g:#16834A;--gd:#11683B;--gt:#E8F3EC;--bg:#FFFFFF;--bg2:#F5F8F5;--tx:#17231B;--tx2:#68746B;--bd:#DCE5DD;
+--ok:#16834A;--okbg:#E8F3EC;--warn:#9A6700;--warnbg:#FBF3DC;--err:#C0392B;--errbg:#FBEAE8;--info:#2B6CB0;--infobg:#E6EFF9;
+--r:14px;--r2:10px;--hh:76px;--bn:64px;--pop:0 8px 28px rgba(23,35,27,.14)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:'Cairo','Tajawal',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.75;font-size:16px;overflow-x:hidden;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{line-height:1.4;font-weight:700}
+svg.lucide{width:1.25em;height:1.25em;stroke-width:2;flex:none}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.container{width:100%;max-width:1180px;margin-inline:auto;padding-inline:20px}
+.page{padding-block:28px 56px;min-height:60vh}
+.has-bnav .page{padding-bottom:calc(var(--bn) + 48px + env(safe-area-inset-bottom))}
+.muted{color:var(--tx2)}.sm{font-size:.875rem}.xs{font-size:.78rem}.b{font-weight:700}
+.row{display:flex;align-items:center;gap:10px}.wrap{flex-wrap:wrap}.between{justify-content:space-between}.grow{flex:1;min-width:0}
+.stack{display:flex;flex-direction:column;gap:14px}
+.hide{display:none!important}
+.num{direction:ltr;unicode-bidi:embed;display:inline-block}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:var(--r2);font-weight:700;font-size:.95rem;border:1.5px solid transparent;transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
+.btn-p{background:var(--g);color:#fff}.btn-p:hover{background:var(--gd)}
+.btn-o{border-color:var(--g);color:var(--g);background:#fff}.btn-o:hover{background:var(--gt)}
+.btn-n{border-color:var(--bd);color:var(--tx);background:#fff}.btn-n:hover{background:var(--bg2)}
+.btn-t{color:var(--g)}.btn-t:hover{background:var(--gt)}
+.btn-d{background:var(--err);color:#fff}.btn-d:hover{background:#a52f23}
+.btn-do{border-color:var(--err);color:var(--err);background:#fff}.btn-do:hover{background:var(--errbg)}
+.btn-sm{height:38px;padding:0 14px;font-size:.85rem}
+.btn-lg{height:54px;padding:0 30px;font-size:1.02rem}
+.btn-b{width:100%}
+.btn:disabled{opacity:.65;cursor:not-allowed}
+.spin{width:16px;height:16px;border-radius:50%;border:2.5px solid currentColor;border-inline-end-color:transparent;animation:sp .7s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.iconbtn{width:42px;height:42px;border-radius:50%;display:inline-grid;place-items:center;border:1.5px solid var(--bd);background:#fff;position:relative}
+.iconbtn:hover{background:var(--bg2)}
+.dot{position:absolute;top:-4px;inset-inline-start:-4px;min-width:20px;height:20px;border-radius:10px;background:var(--err);color:#fff;font-size:.7rem;font-weight:700;display:grid;place-items:center;padding:0 5px;border:2px solid #fff}
+/* header */
+.hdr{position:sticky;top:0;z-index:500;background:#fff;border-bottom:1px solid var(--bd);padding-top:env(safe-area-inset-top)}
+.hdr .container{display:flex;align-items:center;gap:18px;height:var(--hh)}
+.logo{display:flex;align-items:center;height:100%;flex:none}
+.logo img{height:56px;width:auto;object-fit:contain}
+.logo-fb{font-weight:800;font-size:1.7rem;color:var(--g);letter-spacing:.5px}
+.nav{display:flex;gap:4px;margin-inline-start:12px}
+.nav a,.nav button{padding:8px 14px;border-radius:var(--r2);font-weight:600;font-size:.95rem;color:var(--tx2)}
+.nav a:hover,.nav button:hover{background:var(--bg2);color:var(--tx)}
+.nav a.on{color:var(--g);background:var(--gt)}
+.hdr-end{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
+.menu-btn{display:none}
+.avatar{border-radius:50%;background:var(--gt);color:var(--gd);display:grid;place-items:center;font-weight:700;overflow:hidden;flex:none;object-fit:cover}
+/* bottom nav */
+.bnav{position:fixed;inset-inline:0;bottom:0;z-index:600;background:#fff;border-top:1px solid var(--bd);display:none;padding-bottom:env(safe-area-inset-bottom)}
+.bnav .in{display:grid;grid-template-columns:repeat(5,1fr);height:var(--bn)}
+.bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.72rem;font-weight:600;color:var(--tx2);position:relative}
+.bnav a.on{color:var(--g)}
+.bnav a.on::before{content:"";position:absolute;top:0;width:34px;height:3px;border-radius:0 0 3px 3px;background:var(--g)}
+.bnav .dot{top:6px;inset-inline-start:calc(50% + 4px)}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(23,35,27,.45);z-index:900}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-start:0;width:min(320px,86vw);background:#fff;z-index:910;padding:20px;display:flex;flex-direction:column;gap:6px;animation:dr .22s ease-out}
+@keyframes dr{from{transform:translateX(100%)}}
+.drawer a,.drawer button.l{padding:12px 14px;border-radius:var(--r2);font-weight:600;display:flex;gap:10px;align-items:center;text-align:start}
+.drawer a:hover{background:var(--bg2)}
+/* cards / forms */
+.card{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:22px}
+.card.flat{background:var(--bg2);border-color:transparent}
+.card h3{font-size:1.05rem;margin-bottom:12px}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.pagehead h1{font-size:1.65rem}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-weight:600;font-size:.9rem;margin-bottom:10px}
+.back:hover{color:var(--g)}
+.field{display:flex;flex-direction:column;gap:6px}
+.label{font-weight:600;font-size:.9rem}
+.label i{color:var(--err);font-style:normal}
+.input,.textarea{width:100%;height:48px;border:1.5px solid var(--bd);border-radius:var(--r2);padding:0 14px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.textarea{height:auto;min-height:110px;padding:12px 14px;resize:vertical;line-height:1.7}
+.input::placeholder,.textarea::placeholder{color:#9AA69D}
+.input:hover,.textarea:hover{border-color:#B9C7BC}
+.input:focus,.textarea:focus{outline:0;border-color:var(--g);box-shadow:0 0 0 3px rgba(22,131,74,.15)}
+.input:disabled{background:var(--bg2);color:var(--tx2);cursor:not-allowed}
+.has-err .input,.has-err .textarea,.has-err .dd-btn,.has-err .upl{border-color:var(--err)}
+.ferr{color:var(--err);font-size:.82rem;min-height:0;display:none}
+.has-err .ferr{display:block}
+.hint{color:var(--tx2);font-size:.8rem}
+.inwrap{position:relative}
+.inwrap .input{padding-inline-end:46px}
+.inwrap .eye{position:absolute;inset-inline-end:6px;top:5px;width:38px;height:38px;display:grid;place-items:center;color:var(--tx2);border-radius:8px}
+.inwrap .eye:hover{background:var(--bg2)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.formgrid{display:grid;gap:18px}
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:var(--r2);font-size:.9rem;align-items:flex-start}
+.alert.err{background:var(--errbg);color:var(--err)}.alert.warn{background:var(--warnbg);color:var(--warn)}.alert.info{background:var(--infobg);color:var(--info)}.alert.ok{background:var(--okbg);color:var(--gd)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 12px;border-radius:99px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.badge.ok{background:var(--okbg);color:var(--gd)}.badge.warn{background:var(--warnbg);color:var(--warn)}.badge.err{background:var(--errbg);color:var(--err)}.badge.info{background:var(--infobg);color:var(--info)}.badge.mute{background:#EEF1EE;color:var(--tx2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 16px;border-radius:99px;border:1.5px solid var(--bd);background:#fff;font-weight:600;font-size:.86rem;color:var(--tx2);transition:.15s;display:inline-flex;gap:6px;align-items:center}
+.chip:hover{border-color:var(--g);color:var(--g)}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.chip .c{background:rgba(0,0,0,.1);border-radius:99px;font-size:.72rem;padding:0 7px}
+.chiprow{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.chiprow .chip{flex:none}
+/* dropdown */
+.dd{position:relative}
+.dd-btn{width:100%;height:48px;border:1.5px solid var(--bd);border-radius:var(--r2);padding:0 14px;background:#fff;display:flex;align-items:center;gap:10px;text-align:start;transition:border-color .15s,box-shadow .15s}
+.dd-btn:hover{border-color:#B9C7BC}
+.dd-btn[aria-expanded=true]{border-color:var(--g);box-shadow:0 0 0 3px rgba(22,131,74,.15)}
+.dd-btn .dd-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-btn.ph .dd-label{color:#9AA69D}
+.dd-btn>svg:last-child{color:var(--tx2);transition:transform .2s}
+.dd-btn[aria-expanded=true]>svg:last-child{transform:rotate(180deg)}
+.dd-btn>svg:first-child:not(:last-child){color:var(--g)}
+.dd.sm .dd-btn{height:40px;font-size:.88rem}
+.dd-panel{position:fixed;z-index:3000;background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:var(--pop);display:flex;flex-direction:column;overflow:hidden;animation:ddin .12s ease-out}
+@keyframes ddin{from{opacity:0;transform:translateY(-4px)}}
+.dd-search{display:flex;align-items:center;gap:8px;padding:0 12px;border-bottom:1px solid var(--bd);color:var(--tx2);flex:none}
+.dd-search input{border:0;outline:0;height:44px;flex:1;background:none}
+.dd-list{overflow-y:auto;padding:6px;flex:1}
+.dd-opt{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;text-align:start;font-size:.93rem}
+.dd-opt:hover,.dd-opt:focus-visible{background:var(--bg2);outline:0}
+.dd-opt.sel{background:var(--gt);color:var(--gd);font-weight:700}
+.dd-opt .t{flex:1;min-width:0}
+.dd-opt .d{display:block;font-size:.76rem;color:var(--tx2);font-weight:400}
+.dd-opt>svg:first-child{color:var(--g)}
+.dd-empty{padding:16px;text-align:center;color:var(--tx2);font-size:.88rem}
+/* radio cards */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border:1.5px solid var(--bd);border-radius:var(--r);padding:16px;text-align:start;display:flex;gap:12px;align-items:flex-start;transition:.15s;background:#fff;position:relative}
+.opt:hover{border-color:#9DB8A5}
+.opt .oi{width:44px;height:44px;border-radius:12px;background:var(--bg2);display:grid;place-items:center;color:var(--tx2);flex:none}
+.opt .od{font-size:.82rem;color:var(--tx2);line-height:1.5}
+.opt.on{border-color:var(--g);background:var(--gt)}
+.opt.on .oi{background:var(--g);color:#fff}
+.opt.on::after{content:"";position:absolute;top:12px;inset-inline-end:12px;width:20px;height:20px;border-radius:50%;background:var(--g) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/13px no-repeat}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--g);margin-top:3px;flex:none}
+/* image upload */
+.imgs{display:flex;gap:10px;flex-wrap:wrap}
+.thumb{width:96px;height:96px;border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--bd)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:4px;inset-inline-end:4px;width:26px;height:26px;border-radius:50%;background:rgba(23,35,27,.75);color:#fff;display:grid;place-items:center}
+.thumb.big{width:100%;height:auto;max-height:340px;background:var(--bg2)}
+.thumb.big img{height:auto;max-height:340px;object-fit:contain}
+.addimg,.upl{border:1.5px dashed #9DB8A5;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--g);font-weight:600;font-size:.82rem;cursor:pointer;background:var(--bg2);transition:.15s;text-align:center}
+.addimg{width:96px;height:96px}
+.upl{padding:26px 16px;width:100%;font-size:.92rem}
+.addimg:hover,.upl:hover{background:var(--gt);border-color:var(--g)}
+.addimg.busy{opacity:.6;pointer-events:none}
+/* hero */
+.hero{background:var(--bg2);border-bottom:1px solid var(--bd)}
+.hero .container{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-block:48px 52px}
+.hero h1{font-size:2.7rem;line-height:1.35;font-weight:800;margin-bottom:14px}
+.hero p.lead{font-size:1.1rem;color:var(--tx2);max-width:520px;margin-bottom:26px}
+.searchbox{background:#fff;border:1.5px solid var(--bd);border-radius:18px;padding:12px;display:grid;grid-template-columns:1.2fr 1fr auto;gap:10px;align-items:center}
+.searchbox .input,.searchbox .dd-btn{border-color:transparent;background:var(--bg2)}
+.hero-art{width:100%;height:auto;border-radius:24px}
+.sec{padding-block:56px}
+.sec.alt{background:var(--bg2)}
+.sec-h{max-width:640px;margin-bottom:28px}
+.sec-h h2{font-size:1.8rem;margin-bottom:6px}
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}
+.cat{background:#fff;border:1.5px solid var(--bd);border-radius:var(--r);padding:20px 16px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;transition:.15s;font-weight:700}
+.cat .ci{width:48px;height:48px;border-radius:14px;background:var(--gt);color:var(--g);display:grid;place-items:center;transition:.15s}
+.cat:hover{border-color:var(--g)}.cat:hover .ci{background:var(--g);color:#fff}
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.st{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:22px;position:relative}
+.st .n{width:38px;height:38px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:12px}
+.st p{color:var(--tx2);font-size:.9rem}
+.cta{background:var(--g);color:#fff;border-radius:24px;padding:40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cta h2{font-size:1.7rem;margin-bottom:6px}.cta p{opacity:.9;max-width:520px}
+.cta .btn{background:#fff;color:var(--gd)}.cta .btn:hover{background:var(--gt)}
+.foot{background:var(--tx);color:#C9D3CC;padding-block:40px 28px;margin-top:0}
+.foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:28px}
+.foot h4{color:#fff;margin-bottom:10px;font-size:1rem}
+.foot a{display:block;padding:3px 0;font-size:.92rem}.foot a:hover{color:#fff}
+.foot .copy{border-top:1px solid rgba(255,255,255,.15);margin-top:26px;padding-top:16px;font-size:.82rem}
+/* provider card */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.pcard{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;position:relative}
+.pcard:hover{border-color:#9DB8A5}
+.pcard .top{display:flex;gap:12px;align-items:center}
+.pcard h3{font-size:1.02rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--tx2);font-size:.84rem}
+.meta span{display:inline-flex;align-items:center;gap:5px}
+.stars{display:inline-flex;gap:1px;color:#E0A100}
+.stars svg{width:15px;height:15px;fill:currentColor}
+.stars .o{color:#D3DAD4}
+.favbtn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--tx2);border:1px solid var(--bd);background:#fff;flex:none}
+.favbtn:hover{color:var(--err)}
+.favbtn.on{color:var(--err);border-color:#F1C2BC;background:var(--errbg)}
+.favbtn.on svg{fill:currentColor}
+.pcard .favbtn{position:absolute;top:14px;inset-inline-end:14px}
+.pcard .acts{display:flex;gap:8px;margin-top:auto}.pcard .acts .btn{flex:1}
+/* search layout */
+.filters{display:grid;grid-template-columns:1.3fr 1fr 1fr auto auto;gap:12px;align-items:end;margin-bottom:18px}
+.seg{display:inline-flex;background:var(--bg2);border-radius:var(--r2);padding:4px}
+.seg button{padding:7px 18px;border-radius:8px;font-weight:600;font-size:.88rem;color:var(--tx2);display:inline-flex;align-items:center;gap:6px}
+.seg button.on{background:#fff;color:var(--g);border:1px solid var(--bd)}
+.mapbox{height:520px;border-radius:var(--r);overflow:hidden;border:1px solid var(--bd);position:relative;z-index:1}
+.mapbox.tall{height:calc(100vh - var(--hh) - 190px);min-height:420px}
+.leaflet-container{font-family:inherit}
+.pin{width:44px;height:44px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--g);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);overflow:hidden;display:grid;place-items:center}
+.pin>*{transform:rotate(45deg)}
+.pin img{width:140%;height:140%;max-width:none;object-fit:cover}
+.pin b{color:#fff;font-size:1rem}
+.me-pin{width:18px;height:18px;border-radius:50%;background:var(--info);border:3px solid #fff;box-shadow:0 0 0 6px rgba(43,108,176,.25)}
+.hp .leaflet-popup-content-wrapper{border-radius:14px;padding:0}
+.hp .leaflet-popup-content{margin:14px;width:230px!important}
+.hp .pp{display:flex;flex-direction:column;gap:10px;direction:rtl;text-align:right}
+/* order */
+.ocard{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;transition:.15s}
+.ocard:hover{border-color:var(--g)}
+.olist{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.layout2{display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+.progress{display:flex;gap:0;margin-bottom:22px;overflow-x:auto;padding-bottom:4px}
+.pstep{flex:1;min-width:92px;text-align:center;position:relative;font-size:.76rem;font-weight:600;color:var(--tx2)}
+.pstep .pc{width:30px;height:30px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;background:#fff;border:2px solid var(--bd);position:relative;z-index:1}
+.pstep::before{content:"";position:absolute;top:14px;inset-inline-start:50%;width:100%;height:2px;background:var(--bd)}
+.pstep:last-child::before{display:none}
+.pstep.done .pc{background:var(--g);border-color:var(--g);color:#fff}
+.pstep.done::before{background:var(--g)}
+.pstep.cur .pc{border-color:var(--g);color:var(--g)}
+.pstep.done,.pstep.cur{color:var(--tx)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--bd);font-size:.92rem}
+.kv:last-child{border:0}.kv span:first-child{color:var(--tx2)}.kv span:last-child{font-weight:600;text-align:end}
+.offer{display:flex;gap:12px;padding:12px;border-radius:12px;background:var(--bg2);align-items:center}
+.offer.mine{background:var(--gt)}
+.offer.sup{opacity:.6}
+.offer .p{font-size:1.15rem;font-weight:800}
+.tl{display:flex;flex-direction:column;gap:0}
+.tl .ev{position:relative;padding:0 22px 16px 0;font-size:.88rem}
+.tl .ev::before{content:"";position:absolute;right:4px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--g)}
+.tl .ev::after{content:"";position:absolute;right:8px;top:20px;bottom:-4px;width:2px;background:var(--bd)}
+.tl .ev:last-child::after{display:none}
+.wallet{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--gt);border:1.5px solid #B9D9C5;border-radius:var(--r);padding:16px 18px}
+.wallet .w{font-size:1.6rem;font-weight:800;letter-spacing:2px;color:var(--gd);direction:ltr}
+.steps-wiz{display:flex;gap:8px;margin-bottom:22px}
+.steps-wiz .w{flex:1;height:6px;border-radius:3px;background:var(--bd)}
+.steps-wiz .w.on{background:var(--g)}
+/* calendar */
+.cal{border:1.5px solid var(--bd);border-radius:var(--r);padding:14px;max-width:380px}
+.cal .hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700}
+.cal .gd{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .wd{font-size:.76rem;color:var(--tx2);font-weight:600;padding:4px 0}
+.cal .dy{aspect-ratio:1;border-radius:10px;font-weight:600;font-size:.9rem}
+.cal .dy:hover:not(:disabled){background:var(--gt)}
+.cal .dy:disabled{color:#C3CCC5;cursor:not-allowed}
+.cal .dy.on{background:var(--g);color:#fff}
+.cal .dy.td{border:1.5px solid var(--g)}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;max-width:520px}
+.times .chip{justify-content:center}
+.times .chip:disabled{opacity:.4;cursor:not-allowed}
+/* chat */
+.chatbox{display:flex;flex-direction:column;height:calc(100vh - var(--hh) - 40px);min-height:480px;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;background:#fff}
+.chathd{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;gap:12px;align-items:center;background:#fff}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--bg2)}
+.msg{max-width:78%;padding:9px 14px;border-radius:14px;font-size:.93rem;white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid var(--bd);align-self:flex-start;border-end-start-radius:4px}
+.msg.mine{align-self:flex-end;background:var(--g);color:#fff;border-color:var(--g);border-end-start-radius:14px;border-end-end-radius:4px}
+.msg .tm{display:block;font-size:.68rem;opacity:.7;margin-top:2px}
+.msg.fail{opacity:.6}
+.chatin{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd);background:#fff}
+.chatin .input{height:46px}
+.convrow{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bd)}
+.convrow:hover{background:var(--bg2)}
+.convrow:last-child{border:0}
+.unread{min-width:22px;height:22px;border-radius:11px;background:var(--g);color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 6px}
+.nrow{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bd);align-items:flex-start}
+.nrow.un{background:var(--gt)}
+.nrow:last-child{border:0}
+.nic{width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid var(--bd);display:grid;place-items:center;color:var(--g);flex:none}
+.list{border:1px solid var(--bd);border-radius:var(--r);background:#fff;overflow:hidden}
+.stat{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;display:flex;gap:12px;align-items:center}
+.stat .si{width:44px;height:44px;border-radius:12px;background:var(--gt);color:var(--g);display:grid;place-items:center}
+.stat .sv{font-size:1.5rem;font-weight:800;line-height:1.2}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.gal button{aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--bd)}
+.gal img{width:100%;height:100%;object-fit:cover}
+.starin{display:flex;gap:4px}
+.starin button{color:#D3DAD4;padding:2px}
+.starin button.on{color:#E0A100}
+.starin svg{width:34px;height:34px;fill:currentColor}
+.phead{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+/* states */
+.empty{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--tx2);border:1.5px dashed var(--bd);border-radius:var(--r);background:#fff}
+.empty .ei{width:64px;height:64px;border-radius:50%;background:var(--gt);color:var(--g);display:grid;place-items:center;margin-bottom:4px}
+.empty h3{color:var(--tx)}.empty p{max-width:380px;font-size:.92rem}
+.errbox{text-align:center;padding:36px 20px;border:1.5px solid #F1C2BC;background:var(--errbg);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--err)}
+.sk{background:var(--bg2);border-radius:var(--r);position:relative;overflow:hidden;min-height:120px}
+.sk::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.7);animation:sk 1.2s ease-in-out infinite}
+@keyframes sk{0%,100%{opacity:0}50%{opacity:1}}
+/* toast */
+.toasts{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline:0;z-index:5000;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding-inline:12px}
+.toast{pointer-events:auto;display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--bd);border-inline-start:5px solid var(--info);border-radius:12px;padding:10px 12px 10px 14px;box-shadow:var(--pop);max-width:440px;width:100%;font-size:.92rem;font-weight:600;animation:tin .22s ease-out}
+.toast.out{animation:tout .2s ease-in forwards}
+.toast.ok{border-inline-start-color:var(--ok)}.toast.ok>svg{color:var(--ok)}
+.toast.err{border-inline-start-color:var(--err)}.toast.err>svg{color:var(--err)}
+.toast.warn{border-inline-start-color:#D69E2E}.toast.warn>svg{color:#D69E2E}
+.toast.info>svg{color:var(--info)}
+.toast .x{margin-inline-start:auto;color:var(--tx2);padding:4px;border-radius:6px}
+@keyframes tin{from{opacity:0;transform:translateY(-12px)}}
+@keyframes tout{to{opacity:0;transform:translateY(-12px)}}
+/* modal */
+.mscrim{position:fixed;inset:0;background:rgba(23,35,27,.5);z-index:2000;display:grid;place-items:center;padding:16px;animation:fd .15s}
+@keyframes fd{from{opacity:0}}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:420px;max-height:calc(100vh - 32px);overflow:auto;box-shadow:var(--pop);animation:mi .2s ease-out;position:relative}
+@keyframes mi{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.modal .mb{padding:28px 24px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.modal .mi{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin-bottom:4px}
+.modal .mi svg{width:30px;height:30px}
+.modal.confirm .mi{background:var(--warnbg);color:var(--warn)}
+.modal.confirm.danger .mi{background:var(--errbg);color:var(--err)}
+.modal.success .mi{background:var(--g);color:#fff;width:76px;height:76px}
+.modal.error .mi{background:var(--errbg);color:var(--err)}
+.modal.info .mi{background:var(--infobg);color:var(--info)}
+.modal h3{font-size:1.2rem}.modal p{color:var(--tx2);font-size:.94rem}
+.modal .ma{display:flex;gap:10px;padding:0 24px 24px}
+.modal .ma .btn{flex:1}
+.modal.custom{max-width:640px;text-align:start}
+.modal.custom .ch{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:#fff;z-index:2}
+.modal.custom .cb{padding:20px}
+.modal.lb{max-width:900px;background:transparent;box-shadow:none}
+.modal.lb img{max-height:86vh;margin:auto;border-radius:12px}
+.modal.lb button{position:absolute;top:8px;inset-inline-end:8px;background:rgba(23,35,27,.75);color:#fff;width:38px;height:38px;border-radius:50%;display:grid;place-items:center}
+.sr{border:1px solid var(--bd);border-radius:10px;padding:10px 12px;text-align:start;width:100%;display:flex;gap:8px;align-items:center}
+.sr:hover{background:var(--bg2)}
+.login-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - var(--hh))}
+.login-side{background:var(--g);color:#fff;padding:56px 48px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.login-side h2{font-size:2rem;line-height:1.4}
+.login-side li{list-style:none;display:flex;gap:10px;align-items:flex-start;opacity:.95}
+.login-main{display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.login-main .box{width:100%;max-width:440px}
+.tabs-s{display:flex;gap:4px;border-bottom:1px solid var(--bd);margin-bottom:18px;overflow-x:auto}
+.tabs-s button{padding:10px 16px;font-weight:700;color:var(--tx2);border-bottom:3px solid transparent;white-space:nowrap}
+.tabs-s button.on{color:var(--g);border-color:var(--g)}
+.svc{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--bd);align-items:flex-start}
+.svc:last-child{border:0}
+.svc .si{width:84px;height:84px;border-radius:12px;background:var(--bg2);overflow:hidden;flex:none;display:grid;place-items:center;color:var(--tx2)}
+.svc .si img{width:100%;height:100%;object-fit:cover}
+/* responsive */
+@media(max-width:960px){
+ .hero .container{grid-template-columns:1fr;padding-block:30px 34px}
+ .hero h1{font-size:2.1rem}
+ .hero-art{display:none}
+ .layout2{grid-template-columns:1fr}
+ .filters{grid-template-columns:1fr 1fr}
+ .steps4{grid-template-columns:1fr 1fr}
+ .login-wrap{grid-template-columns:1fr}.login-side{display:none}
+ .foot .cols{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+ :root{--hh:64px}
+ .container{padding-inline:16px}
+ .nav,.hdr-end .hide-m{display:none}
+ .menu-btn{display:inline-grid}
+ .logo img{height:48px}
+ .bnav{display:block}
+ .searchbox{grid-template-columns:1fr}
+ .grid2,.grid3,.opts{grid-template-columns:1fr}
+ .filters{grid-template-columns:1fr}
+ .pagehead h1{font-size:1.35rem}
+ .sec{padding-block:36px}.sec-h h2{font-size:1.4rem}
+ .cta{padding:26px}
+ .steps4{grid-template-columns:1fr}
+ .olist{grid-template-columns:1fr}
+ .chatbox{height:calc(100vh - var(--hh) - var(--bn) - 24px - env(safe-area-inset-bottom))}
+ .mapbox{height:420px}
+ .mapbox.tall{height:calc(100vh - var(--hh) - var(--bn) - 250px)}
+ .foot .cols{grid-template-columns:1fr}
+ .card{padding:16px}
+ .wallet .w{font-size:1.2rem}
+ .toasts{top:auto;bottom:calc(var(--bn) + 12px + env(safe-area-inset-bottom))}
+ .no-bnav .toasts{bottom:calc(12px + env(safe-area-inset-bottom))}
+ @keyframes tin{from{opacity:0;transform:translateY(12px)}}
+ @keyframes tout{to{opacity:0;transform:translateY(12px)}}
+ .mscrim{align-items:end;padding:0}
+ .modal{border-radius:20px 20px 0 0;max-width:none}
+ .modal.lb{border-radius:0}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="hdr" id="hdr"></header>
+  <main id="view"></main>
+  <footer id="ftr"></footer>
+  <nav class="bnav" id="bnav" aria-label="التنقل الرئيسي"></nav>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="modal-root"></div>
+<div id="drawer-root"></div>
+<script type="module">
+/* ===================== 1. إعداد Firebase ===================== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit,
+  onSnapshot, serverTimestamp, writeBatch, runTransaction, increment, Timestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDKYOeOyouQTT20Bl6GNYH_UOBECwB8CJs",
+  authDomain: "project1-9b9dd.firebaseapp.com",
+  projectId: "project1-9b9dd",
+  storageBucket: "project1-9b9dd.firebasestorage.app",
+  messagingSenderId: "742348389376",
+  appId: "1:742348389376:web:4d9cb1aba6c66490a76ce5"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+
+/* ===================== 2. عمليات Firestore ===================== */
+const col = (...p) => collection(db, ...p);
+const dref = (...p) => doc(db, ...p);
+const mapDocs = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
+async function dbGet(...path) { const s = await getDoc(dref(...path)); return s.exists() ? { id: s.id, ...s.data() } : null; }
+async function dbList(colPath, ...cons) { const p = Array.isArray(colPath) ? colPath : [colPath]; return mapDocs(await getDocs(query(col(...p), ...cons))); }
+async function dbAdd(colPath, data) { const p = Array.isArray(colPath) ? colPath : [colPath]; const r = await addDoc(col(...p), { ...data, createdAt: serverTimestamp() }); return r.id; }
+async function dbSet(path, data, merge = false) { await setDoc(dref(...path), data, { merge }); }
+async function dbUpdate(path, data) { await updateDoc(dref(...path), { ...data, updatedAt: serverTimestamp() }); }
+async function dbDelete(...path) { await deleteDoc(dref(...path)); }
+function dbListenCol(colPath, cons, cb, errCb, persistent = false) {
+  const p = Array.isArray(colPath) ? colPath : [colPath];
+  const un = onSnapshot(query(col(...p), ...cons), s => cb(mapDocs(s)), e => (errCb || console.error)(e));
+  if (!persistent) S.cleanups.push(un);
+  return un;
+}
+function dbListenDoc(path, cb, errCb) {
+  const un = onSnapshot(dref(...path), s => cb(s.exists() ? { id: s.id, ...s.data() } : null), e => (errCb || console.error)(e));
+  S.cleanups.push(un); return un;
+}
+
+/* ===================== 3. الحالة والثوابت ===================== */
+const S = { user: null, provider: null, userLoc: null, favs: new Set(), unreadNotif: 0, unreadMsgs: 0, navTok: 0,
+  cleanups: [], ddMap: new Map(), drafts: {}, page: {}, returnTo: null, userCache: new Map(), dd: null, persist: [] };
+try { const l = JSON.parse(localStorage.getItem('herfa_loc') || 'null'); if (l && isFinite(l.lat) && isFinite(l.lng)) S.userLoc = l; } catch {}
+
+const WALLET = '01070827731';
+const CATS = [
+  { id: 'plumbing', name: 'السباكة', icon: 'droplets', desc: 'تسريبات، تركيبات، صرف' },
+  { id: 'electric', name: 'الكهرباء', icon: 'zap', desc: 'تمديدات، لوحات، إنارة' },
+  { id: 'carpentry', name: 'النجارة', icon: 'hammer', desc: 'أبواب، مطابخ، أثاث' },
+  { id: 'painting', name: 'الدهانات', icon: 'paint-roller', desc: 'دهان داخلي وخارجي' },
+  { id: 'appliances', name: 'صيانة الأجهزة', icon: 'washing-machine', desc: 'غسالات، ثلاجات، سخانات' },
+  { id: 'ac', name: 'التكييف والتبريد', icon: 'snowflake', desc: 'تركيب وصيانة وشحن' },
+  { id: 'aluminum', name: 'الألوميتال', icon: 'frame', desc: 'شبابيك، أبواب، واجهات' },
+  { id: 'finishing', name: 'أعمال التشطيب', icon: 'brick-wall', desc: 'بياض، سيراميك، جبس' },
+  { id: 'cleaning', name: 'التنظيف', icon: 'sparkles', desc: 'منازل، مكاتب، بعد التشطيب' },
+  { id: 'moving', name: 'نقل الأثاث', icon: 'truck', desc: 'فك، نقل، تركيب' },
+  { id: 'other', name: 'خدمات منزلية أخرى', icon: 'wrench', desc: 'أعمال متنوعة' }
+];
+const catOf = id => CATS.find(c => c.id === id);
+const GOVS = ['القاهرة','الجيزة','الإسكندرية','الدقهلية','البحيرة','الفيوم','الغربية','الإسماعيلية','المنوفية','المنيا','القليوبية','الوادي الجديد','السويس','الشرقية','أسوان','أسيوط','بني سويف','بورسعيد','دمياط','جنوب سيناء','كفر الشيخ','مطروح','الأقصر','قنا','شمال سيناء','سوهاج','البحر الأحمر'];
+const govOpts = GOVS.map(g => ({ value: g, label: g }));
+const catOpts = (all) => [...(all ? [{ value: '', label: 'كل الحرف', icon: 'layout-grid' }] : []), ...CATS.map(c => ({ value: c.id, label: c.name, icon: c.icon, desc: c.desc }))];
+const RADII = [{ value: '5', label: '5 كيلومترات' }, { value: '10', label: '10 كيلومترات' }, { value: '15', label: '15 كيلومترًا' }, { value: 'all', label: 'جميع النتائج المتاحة' }];
+const PRICE_TYPES = [{ value: 'fixed', label: 'سعر ثابت' }, { value: 'hourly', label: 'بالساعة' }, { value: 'per_meter', label: 'بالمتر' }, { value: 'starting_from', label: 'يبدأ من' }, { value: 'quote', label: 'يُحدد بعد المعاينة' }];
+const priceTypeLabel = v => (PRICE_TYPES.find(p => p.value === v) || {}).label || '';
+const STATUS = {
+  pending_provider: { t: 'بانتظار رد الحرفي', tone: 'warn' }, negotiating: { t: 'التفاوض على السعر', tone: 'info' },
+  price_agreed: { t: 'بانتظار تحديد الموعد', tone: 'info' }, awaiting_payment: { t: 'بانتظار الدفع', tone: 'warn' },
+  pending_payment_review: { t: 'جارٍ مراجعة الطلب', tone: 'warn' }, payment_approved: { t: 'تم قبول الدفع', tone: 'ok' },
+  payment_rejected: { t: 'تم رفض الإيصال', tone: 'err' }, in_progress: { t: 'جارٍ التنفيذ', tone: 'ok' },
+  completed: { t: 'مكتمل', tone: 'ok' }, cancelled: { t: 'ملغي', tone: 'mute' }, rejected: { t: 'مرفوض من الحرفي', tone: 'err' }
+};
+function dispStatus(o) {
+  if (['completed', 'cancelled', 'rejected', 'in_progress'].includes(o.status)) return o.status;
+  if (o.paymentStatus === 'payment_rejected') return 'payment_rejected';
+  if (o.paymentStatus === 'payment_approved') return 'payment_approved';
+  return o.status;
+}
+const statusBadge = o => { const s = STATUS[dispStatus(o)] || { t: o.status, tone: 'mute' }; return `<span class="badge ${s.tone}">${s.t}</span>`; };
+const CUST_GROUPS = [
+  ['all', 'جميع الطلبات'], ['pending_provider', 'بانتظار الرد'], ['negotiating', 'التفاوض'], ['price_agreed', 'بانتظار تحديد الموعد'],
+  ['awaiting_payment', 'بانتظار الدفع'], ['review', 'بانتظار مراجعة الدفع'], ['accepted', 'الطلبات المقبولة'], ['in_progress', 'الطلبات الجارية'],
+  ['completed', 'المكتملة'], ['cancelled', 'الملغاة']
+];
+const PROV_GROUPS = [
+  ['all', 'جميع الطلبات'], ['pending_provider', 'تحتاج إلى رد'], ['negotiating', 'قيد التفاوض'], ['agreed', 'تم الاتفاق'],
+  ['review', 'بانتظار مراجعة الدفع'], ['accepted', 'مقبولة الدفع'], ['in_progress', 'جارية'], ['completed', 'مكتملة'], ['cancelled', 'ملغاة']
+];
+function groupMatch(o, g, role) {
+  const d = dispStatus(o);
+  if (g === 'all') return true;
+  if (g === 'review') return d === 'pending_payment_review' || d === 'payment_rejected';
+  if (g === 'accepted') return d === 'payment_approved';
+  if (g === 'cancelled') return d === 'cancelled' || d === 'rejected';
+  if (g === 'agreed') return d === 'price_agreed' || d === 'awaiting_payment';
+  return d === g;
+}
+
+/* ===================== أدوات عامة ===================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ic = (n, cls = '') => `<i data-lucide="${n}" class="${cls}"></i>`;
+const refreshIcons = () => { try { window.lucide && window.lucide.createIcons(); } catch {} };
+const tsMs = t => t?.toMillis ? t.toMillis() : (t instanceof Date ? t.getTime() : (typeof t === 'number' ? t : Date.now()));
+const fmtDate = t => t ? new Date(tsMs(t)).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }) : 'الآن';
+const fmtDay = t => new Date(tsMs(t)).toLocaleDateString('ar-EG', { dateStyle: 'medium' });
+const fmtPrice = n => (n || n === 0) ? `${Number(n).toLocaleString('ar-EG')} ج.م` : '—';
+const toEn = s => String(s || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+const initials = n => (String(n || '؟').trim()[0] || '؟');
+const avatar = (photo, name, size = 48) => photo
+  ? `<img class="avatar" style="width:${size}px;height:${size}px" src="${photo}" alt="${esc(name)}">`
+  : `<span class="avatar" style="width:${size}px;height:${size}px;font-size:${size * .42}px">${esc(initials(name))}</span>`;
+const stars = (avg) => { const r = Math.round(avg || 0); return `<span class="stars" aria-label="${avg} من 5">${[1, 2, 3, 4, 5].map(i => `<span class="${i <= r ? '' : 'o'}">${ic('star')}</span>`).join('')}</span>`; };
+const ratingLine = p => p.ratingCount > 0 ? `<span class="row" style="gap:6px">${stars(p.ratingAvg)}<span class="xs b">${Number(p.ratingAvg).toFixed(1)}</span><span class="xs muted">(${p.ratingCount})</span></span>` : `<span class="xs muted">لا توجد تقييمات بعد</span>`;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function haversine(a, b, c, d) { const R = 6371, t = x => x * Math.PI / 180; const dLa = t(c - a), dLo = t(d - b); const h = Math.sin(dLa / 2) ** 2 + Math.cos(t(a)) * Math.cos(t(c)) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); }
+const fmtDist = k => k < 1 ? `${Math.round(k * 1000).toLocaleString('ar-EG')} م` : `${k.toLocaleString('ar-EG', { maximumFractionDigits: 1 })} كم`;
+class UserErr extends Error {}
+function friendlyError(e) {
+  if (e instanceof UserErr) return e.message;
+  const c = e?.code || '';
+  if (!navigator.onLine || c === 'unavailable') return 'تعذر الاتصال بالإنترنت. تحقق من الاتصال وحاول مرة أخرى.';
+  if (c === 'permission-denied') return 'قواعد Firestore الحالية لا تسمح بهذه العملية. راجع إعدادات القواعد في مشروع Firebase.';
+  if (c === 'failed-precondition') return 'يحتاج هذا الاستعلام إلى فهرس في Firestore. افتح وحدة التحكم لإنشائه.';
+  if (c === 'resource-exhausted') return 'تم تجاوز حصة Firestore حاليًا. حاول لاحقًا.';
+  if (c === 'invalid-argument' && /size|bytes/i.test(e.message)) return 'حجم البيانات أكبر من الحد المسموح في Firestore. قلل عدد الصور أو حجمها.';
+  console.error(e); return 'حدث خطأ غير متوقع. حاول مرة أخرى.';
+}
+const errorBox = (msg, retry = true) => `<div class="errbox">${ic('triangle-alert')}<b>تعذر تحميل البيانات</b><span class="sm">${esc(msg)}</span>${retry ? `<button class="btn btn-do btn-sm" data-act="retry">${ic('rotate-cw')}إعادة المحاولة</button>` : ''}</div>`;
+const emptyBox = (icon, title, text, btn = '') => `<div class="empty"><div class="ei">${ic(icon, '')}</div><h3>${title}</h3><p>${text}</p>${btn}</div>`;
+const skeletons = (n = 4, h = 150) => `<div class="pgrid">${Array.from({ length: n }, () => `<div class="sk" style="height:${h}px"></div>`).join('')}</div>`;
+function copyText(t) {
+  return (navigator.clipboard?.writeText(t) || Promise.reject()).catch(() => { const a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = 0; document.body.appendChild(a); a.select(); const ok = document.execCommand('copy'); a.remove(); if (!ok) throw new Error('copy'); });
+}
+
+/* ===================== 5. المكونات المشتركة ===================== */
+function showToast(message, type = 'info') {
+  const icons = { ok: 'circle-check', err: 'circle-alert', warn: 'triangle-alert', info: 'info' };
+  const el = document.createElement('div'); el.className = `toast ${type}`; el.setAttribute('role', type === 'err' ? 'alert' : 'status');
+  el.innerHTML = `${ic(icons[type] || 'info')}<span>${esc(message)}</span><button class="x" aria-label="إغلاق">${ic('x')}</button>`;
+  $('#toasts').appendChild(el); refreshIcons();
+  const kill = () => { el.classList.add('out'); setTimeout(() => el.remove(), 220); };
+  el.querySelector('.x').onclick = kill; setTimeout(kill, type === 'err' ? 6500 : 3800);
+}
+function setButtonLoading(btn, loading, label) {
+  if (!btn) return;
+  if (loading) {
+    if (btn.dataset.orig === undefined) btn.dataset.orig = btn.innerHTML;
+    btn.style.minWidth = btn.offsetWidth + 'px'; btn.disabled = true; btn.classList.add('loading');
+    btn.innerHTML = `<span class="spin"></span><span>${esc(label || 'جارٍ التنفيذ')}</span>`;
+  } else {
+    btn.disabled = false; btn.classList.remove('loading');
+    if (btn.dataset.orig !== undefined) { btn.innerHTML = btn.dataset.orig; delete btn.dataset.orig; refreshIcons(); }
+    btn.style.minWidth = '';
+  }
+}
+async function withLoading(btn, label, fn) {
+  if (btn && btn.disabled) return;
+  setButtonLoading(btn, true, label);
+  try { return await fn(); } finally { setButtonLoading(btn, false); }
+}
+/* نوافذ منبثقة مخصصة */
+let modalStack = [];
+function openModal(o = {}) {
+  return new Promise(resolve => {
+    const type = o.type || 'info';
+    const icons = { confirm: o.danger ? 'trash-2' : 'circle-help', success: 'check', error: 'circle-alert', info: 'info' };
+    const sc = document.createElement('div'); sc.className = 'mscrim';
+    const prevFocus = document.activeElement;
+    let html;
+    if (type === 'custom') {
+      html = `<div class="modal custom" role="dialog" aria-modal="true" aria-label="${esc(o.title || '')}"><div class="ch"><h3>${esc(o.title || '')}</h3><button class="iconbtn" data-close aria-label="إغلاق">${ic('x')}</button></div><div class="cb">${o.html || ''}</div></div>`;
+    } else if (type === 'lightbox') {
+      html = `<div class="modal lb" role="dialog" aria-modal="true"><button data-close aria-label="إغلاق">${ic('x')}</button><img src="${o.src}" alt=""></div>`;
+    } else {
+      html = `<div class="modal ${type} ${o.danger ? 'danger' : ''}" role="dialog" aria-modal="true"><div class="mb"><div class="mi">${ic(icons[type] || 'info')}</div><h3>${esc(o.title || '')}</h3>${o.body ? `<p>${esc(o.body)}</p>` : ''}${o.html || ''}</div><div class="ma">
+        ${type === 'confirm' ? `<button class="btn btn-n" data-close>${esc(o.cancelText || 'إلغاء')}</button><button class="btn ${o.danger ? 'btn-d' : 'btn-p'}" data-ok>${esc(o.confirmText || 'تأكيد')}</button>` : `<button class="btn ${type === 'error' ? 'btn-n' : 'btn-p'}" data-ok>${esc(o.confirmText || 'حسنًا')}</button>`}</div></div>`;
+    }
+    sc.innerHTML = html; $('#modal-root').appendChild(sc); refreshIcons();
+    let done = false;
+    const close = (v) => { if (done) return; done = true; sc.remove(); modalStack = modalStack.filter(m => m !== api); document.removeEventListener('keydown', onKey); try { prevFocus?.focus?.(); } catch {} resolve(v); };
+    const api = { close }; modalStack.push(api);
+    const onKey = e => { if (e.key === 'Escape' && modalStack[modalStack.length - 1] === api && !S.dd) close(false); };
+    document.addEventListener('keydown', onKey);
+    sc.addEventListener('mousedown', e => { if (e.target === sc && !o.persistent) close(false); });
+    sc.querySelectorAll('[data-close]').forEach(b => b.onclick = () => close(false));
+    const ok = sc.querySelector('[data-ok]');
+    if (ok) ok.onclick = async () => {
+      if (o.onConfirm) {
+        try { setButtonLoading(ok, true, o.loadingText || 'جارٍ التنفيذ'); await o.onConfirm(); setButtonLoading(ok, false); close(true); }
+        catch (e) { setButtonLoading(ok, false); showToast(friendlyError(e), 'err'); }
+      } else close(true);
+    };
+    (ok || sc.querySelector('input,button'))?.focus();
+    if (o.onOpen) o.onOpen(sc.querySelector('.modal'), close);
+  });
+}
+function closeModal() { const m = modalStack[modalStack.length - 1]; if (m) m.close(false); }
+const confirmBox = (title, body, confirmText, danger = true, onConfirm) => openModal({ type: 'confirm', title, body, confirmText, danger, onConfirm });
+const lightbox = src => openModal({ type: 'lightbox', src });
+
+/* قوائم منسدلة مخصصة */
+let ddUid = 0;
+function dd({ name, options, value = '', placeholder = 'اختر', search = false, onChange, small = false }) {
+  const id = 'dd' + (++ddUid); S.ddMap.set(id, { options, onChange, search, name });
+  const cur = options.find(o => String(o.value) === String(value));
+  return `<div class="dd ${small ? 'sm' : ''}" id="${id}" data-dd="${name}" data-value="${esc(value)}"><button type="button" class="dd-btn ${cur ? '' : 'ph'}" aria-haspopup="listbox" aria-expanded="false" data-act="dd-toggle" data-id="${id}">${cur?.icon ? ic(cur.icon) : ''}<span class="dd-label">${esc(cur ? cur.label : placeholder)}</span>${ic('chevron-down')}</button></div>`;
+}
+const ddv = (name, root = document) => root.querySelector(`[data-dd="${name}"]`)?.dataset.value || '';
+function setDD(name, value, root = document) {
+  const el = root.querySelector(`[data-dd="${name}"]`); if (!el) return; const cfg = S.ddMap.get(el.id); const cur = cfg.options.find(o => String(o.value) === String(value));
+  el.dataset.value = value; const b = el.querySelector('.dd-btn'); b.classList.toggle('ph', !cur);
+  b.innerHTML = `${cur?.icon ? ic(cur.icon) : ''}<span class="dd-label">${esc(cur ? cur.label : 'اختر')}</span>${ic('chevron-down')}`; refreshIcons();
+}
+function closeDD() { if (!S.dd) return; S.dd.p.remove(); S.dd.btn.setAttribute('aria-expanded', 'false'); S.dd = null; }
+function openDD(id) {
+  if (S.dd?.id === id) { closeDD(); return; } closeDD();
+  const root = document.getElementById(id); if (!root) return; const cfg = S.ddMap.get(id); const btn = root.querySelector('.dd-btn');
+  const p = document.createElement('div'); p.className = 'dd-panel'; p.setAttribute('role', 'listbox');
+  p.innerHTML = (cfg.search ? `<div class="dd-search">${ic('search')}<input type="text" placeholder="ابحث..." autocomplete="off" aria-label="بحث في الخيارات"></div>` : '') + `<div class="dd-list"></div>`;
+  document.body.appendChild(p); btn.setAttribute('aria-expanded', 'true'); S.dd = { id, p, btn };
+  const list = p.querySelector('.dd-list'); const cur = root.dataset.value;
+  const draw = (q = '') => {
+    const items = cfg.options.filter(o => !q || (o.label + ' ' + (o.desc || '')).includes(q));
+    list.innerHTML = items.length ? items.map(o => `<button type="button" class="dd-opt ${String(o.value) === cur ? 'sel' : ''}" role="option" data-v="${esc(o.value)}">${o.icon ? ic(o.icon) : ''}<span class="t">${esc(o.label)}${o.desc ? `<span class="d">${esc(o.desc)}</span>` : ''}</span>${String(o.value) === cur ? ic('check') : ''}</button>`).join('') : `<div class="dd-empty">لا توجد نتائج مطابقة</div>`;
+    refreshIcons();
+  };
+  draw();
+  list.addEventListener('click', e => {
+    const b = e.target.closest('.dd-opt'); if (!b) return; const v = b.dataset.v; const opt = cfg.options.find(o => String(o.value) === v);
+    setDD(cfg.name, v, document); closeDD(); btn.focus(); cfg.onChange && cfg.onChange(v, opt);
+  });
+  const si = p.querySelector('input'); if (si) { si.addEventListener('input', () => draw(si.value.trim())); }
+  p.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); const os = $$('.dd-opt', p); if (!os.length) return; let i = os.indexOf(document.activeElement);
+      i = e.key === 'ArrowDown' ? Math.min(os.length - 1, i + 1) : Math.max(0, i - 1); os[i].focus();
+    }
+  });
+  placeDD(); (si || list.querySelector('.sel') || list.querySelector('.dd-opt'))?.focus({ preventScroll: true });
+  list.querySelector('.sel')?.scrollIntoView({ block: 'nearest' });
+}
+function placeDD() {
+  if (!S.dd) return; const { p, btn } = S.dd; const r = btn.getBoundingClientRect(); const vw = innerWidth, vh = innerHeight;
+  const w = Math.min(Math.max(r.width, 230), vw - 16); p.style.width = w + 'px';
+  let left = r.right - w; left = Math.max(8, Math.min(left, vw - w - 8)); p.style.left = left + 'px';
+  p.style.maxHeight = '320px'; const h = p.offsetHeight; const below = vh - r.bottom - 10, above = r.top - 10;
+  if (h > below && above > below) { p.style.maxHeight = Math.min(320, above) + 'px'; p.style.top = 'auto'; p.style.bottom = (vh - r.top + 6) + 'px'; }
+  else { p.style.maxHeight = Math.min(320, below) + 'px'; p.style.bottom = 'auto'; p.style.top = (r.bottom + 6) + 'px'; }
+}
+document.addEventListener('pointerdown', e => { if (S.dd && !S.dd.p.contains(e.target) && !S.dd.btn.contains(e.target)) closeDD(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.dd) { const b = S.dd.btn; closeDD(); b.focus(); } });
+window.addEventListener('scroll', e => { if (S.dd && !S.dd.p.contains(e.target)) placeDD(); }, true);
+window.addEventListener('resize', () => { if (S.dd) placeDD(); });
+
+/* حقول ونماذج */
+const field = (id, label, inner, { hint = '', req = false } = {}) => `<div class="field" data-f="${id}"><label class="label" ${inner.includes('class="dd"') || inner.includes('class="dd ') ? '' : `for="${id}"`}>${label}${req ? ' <i>*</i>' : ''}</label>${inner}<div class="ferr" id="err-${id}"></div>${hint ? `<div class="hint">${hint}</div>` : ''}</div>`;
+const input = (id, o = {}) => `<input class="input" id="${id}" name="${id}" type="${o.type || 'text'}" ${o.ph ? `placeholder="${esc(o.ph)}"` : ''} value="${esc(o.v ?? '')}" ${o.attrs || ''}>`;
+const textarea = (id, o = {}) => `<textarea class="textarea" id="${id}" name="${id}" ${o.ph ? `placeholder="${esc(o.ph)}"` : ''} ${o.attrs || ''}>${esc(o.v ?? '')}</textarea>`;
+function setErr(id, msg) { const f = document.querySelector(`[data-f="${id}"]`); if (!f) return; f.classList.toggle('has-err', !!msg); const e = f.querySelector('.ferr'); if (e) e.textContent = msg || ''; }
+function clearErrs(root = document) { $$('.has-err', root).forEach(f => f.classList.remove('has-err')); }
+function focusFirstErr() { const f = $('.has-err .input, .has-err .textarea, .has-err .dd-btn'); f?.scrollIntoView({ block: 'center', behavior: 'smooth' }); f?.focus({ preventScroll: true }); }
+const val = id => (document.getElementById(id)?.value ?? '').trim();
+function multiChips(name, options, selected = []) {
+  return `<div class="chips" data-multi="${name}" data-vals="${selected.join(',')}">${options.map(o => `<button type="button" class="chip ${selected.includes(o.value) ? 'on' : ''}" data-act="multi" data-v="${o.value}">${o.icon ? ic(o.icon) : ''}${esc(o.label)}</button>`).join('')}</div>`;
+}
+const multiv = name => ($(`[data-multi="${name}"]`)?.dataset.vals || '').split(',').filter(Boolean);
+function radioCards(name, items, value) {
+  return `<div class="opts" data-radio="${name}" data-value="${value || ''}">${items.map(i => `<button type="button" class="opt ${i.value === value ? 'on' : ''}" data-act="radio" data-v="${i.value}"><span class="oi">${ic(i.icon)}</span><span><b>${i.title}</b><span class="od" style="display:block">${i.desc}</span></span></button>`).join('')}</div>`;
+}
+const radiov = name => $(`[data-radio="${name}"]`)?.dataset.value || '';
+function pwField(id, label, ph = '') { return field(id, label, `<div class="inwrap"><input class="input" id="${id}" name="${id}" type="password" autocomplete="${id === 'pw' || id === 'pw2' ? 'new-password' : 'current-password'}" placeholder="${ph}"><button type="button" class="eye" data-act="eye" aria-label="إظهار أو إخفاء كلمة المرور">${ic('eye')}</button></div>`, { req: true }); }
+
+/* ===================== 10. معالجة الصور ===================== */
+function loadImage(file) {
+  return new Promise((res, rej) => { const u = URL.createObjectURL(file); const im = new Image(); im.onload = () => { URL.revokeObjectURL(u); res(im); }; im.onerror = () => { URL.revokeObjectURL(u); rej(new UserErr('تعذر قراءة هذه الصورة. استخدم صيغة JPG أو PNG أو WebP.')); }; im.src = u; });
+}
+async function compressImage(file, { maxDim = 1100, maxChars = 150000 } = {}) {
+  if (!file || !/^image\//.test(file.type)) throw new UserErr('الملف المختار ليس صورة.');
+  if (file.size > 15 * 1024 * 1024) throw new UserErr('حجم الصورة كبير جدًا. اختر صورة أقل من 15 ميجابايت.');
+  const im = await loadImage(file); let dim = maxDim;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const sc = Math.min(1, dim / Math.max(im.naturalWidth, im.naturalHeight)); const w = Math.max(1, Math.round(im.naturalWidth * sc)), h = Math.max(1, Math.round(im.naturalHeight * sc));
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(im, 0, 0, w, h);
+    for (let q = .85; q >= .4; q -= .1) { const d = c.toDataURL('image/jpeg', q); if (d.length <= maxChars) return d; }
+    dim = Math.round(dim * .78);
+  }
+  throw new UserErr('تعذر تصغير الصورة إلى الحجم المسموح. جرّب صورة أبسط أو أصغر.');
+}
+function imgField(rootId, { max = 1, maxChars = 150000, dim = 1100, initial = [], label = 'إضافة صورة', big = false } = {}) {
+  const root = document.getElementById(rootId); const f = { items: initial.map(x => typeof x === 'string' ? { data: x } : x) };
+  f.data = () => f.items.map(i => i.data); f.chars = () => f.items.reduce((a, i) => a + i.data.length, 0);
+  function draw(msg = '') {
+    root.innerHTML = `<div class="imgs">${f.items.map((it, i) => `<div class="thumb ${big ? 'big' : ''}"><img src="${it.data}" alt="معاينة"><button type="button" data-rm="${i}" aria-label="حذف الصورة">${ic('x')}</button></div>`).join('')}${f.items.length < max ? `<label class="${big ? 'upl' : 'addimg'}">${ic(big ? 'upload' : 'image-plus')}<span>${label}</span><input type="file" accept="image/*" ${max > 1 ? 'multiple' : ''} hidden></label>` : ''}</div><div class="ferr" style="display:${msg ? 'block' : 'none'};margin-top:6px">${esc(msg)}</div>`;
+    refreshIcons();
+    root.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { f.items.splice(+b.dataset.rm, 1); draw(); f.onChange?.(); });
+    const inp = root.querySelector('input[type=file]');
+    if (inp) inp.onchange = async () => {
+      const files = [...inp.files].slice(0, max - f.items.length); inp.value = ''; if (!files.length) return;
+      const lab = root.querySelector('label'); lab.classList.add('busy'); lab.querySelector('span').textContent = 'جارٍ المعالجة...'; let err = '';
+      for (const file of files) { try { f.items.push({ data: await compressImage(file, { maxDim: dim, maxChars }) }); } catch (e) { err = friendlyError(e); } }
+      draw(err); f.onChange?.();
+    };
+  }
+  draw(); return f;
+}
+async function hashPassword(pw, saltB64, iter = 150000) {
+  if (!window.crypto?.subtle) throw new UserErr('المتصفح لا يدعم التشفير المطلوب. افتح الموقع عبر اتصال آمن (HTTPS).');
+  const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: iter, hash: 'SHA-256' }, key, 256);
+  return btoa(String.fromCharCode(...new Uint8Array(bits)));
+}
+const newSalt = () => btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+
+/* ===================== المواقع والخرائط ===================== */
+function geolocate() {
+  return new Promise((res, rej) => {
+    if (!navigator.geolocation) return rej(new UserErr('المتصفح لا يدعم تحديد الموقع. اختر الموقع يدويًا.'));
+    navigator.geolocation.getCurrentPosition(p => res({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      e => rej(new UserErr(e.code === 1 ? 'لم يتم السماح بالوصول إلى الموقع. يمكنك اختيار الموقع يدويًا على الخريطة.' : 'تعذر تحديد موقعك الآن. جرّب مرة أخرى أو اختر الموقع يدويًا.')),
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+  });
+}
+function saveLoc(l) { S.userLoc = l; try { localStorage.setItem('herfa_loc', JSON.stringify(l)); } catch {} }
+function newMap(el, center, zoom) {
+  const m = L.map(el, { zoomControl: true, attributionControl: true }).setView(center || [26.8, 30.8], zoom || 6);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; مساهمو <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(m);
+  S.cleanups.push(() => { try { m.remove(); } catch {} }); setTimeout(() => m.invalidateSize(), 150); return m;
+}
+/* منتقي الموقع: بحث + موقعي + نقر/سحب العلامة */
+function mountPicker(rootId, { lat, lng, height = 300, onChange } = {}) {
+  const root = document.getElementById(rootId); const ctl = { lat: lat ?? null, lng: lng ?? null };
+  root.innerHTML = `<div class="stack" style="gap:10px"><div class="row wrap"><div class="row grow" style="min-width:200px"><input class="input" data-q placeholder="ابحث عن منطقة أو عنوان" style="height:42px"><button type="button" class="btn btn-n btn-sm" data-s>${ic('search')}بحث</button></div><button type="button" class="btn btn-o btn-sm" data-me>${ic('locate-fixed')}تحديد موقعي الحالي</button></div><div data-res class="stack hide" style="gap:6px"></div><div data-map style="height:${height}px;border-radius:12px;border:1px solid var(--bd);position:relative;z-index:1"></div><div class="hint" data-h>انقر على الخريطة أو اسحب العلامة لتحديد الموقع.</div></div>`;
+  const m = newMap(root.querySelector('[data-map]'), lat != null ? [lat, lng] : null, lat != null ? 15 : 6); let mk = null;
+  const hint = root.querySelector('[data-h]');
+  const set = (a, b, zoom) => {
+    ctl.lat = +a.toFixed(6); ctl.lng = +b.toFixed(6);
+    if (!mk) { mk = L.marker([a, b], { draggable: true }).addTo(m); mk.on('dragend', () => { const p = mk.getLatLng(); set(p.lat, p.lng); }); } else mk.setLatLng([a, b]);
+    if (zoom) m.setView([a, b], zoom); hint.innerHTML = `${'الموقع المحدد'}: <span class="num">${ctl.lat}, ${ctl.lng}</span>`; onChange?.(ctl.lat, ctl.lng);
+  };
+  ctl.set = set; if (lat != null) set(lat, lng, 15);
+  m.on('click', e => set(e.latlng.lat, e.latlng.lng));
+  root.querySelector('[data-me]').onclick = async (e) => { const b = e.currentTarget; await withLoading(b, 'جارٍ التحديد', async () => { try { const p = await geolocate(); set(p.lat, p.lng, 16); } catch (er) { showToast(friendlyError(er), 'err'); } }); };
+  const doSearch = async () => {
+    const q = root.querySelector('[data-q]').value.trim(); if (!q) return; const b = root.querySelector('[data-s]'); const box = root.querySelector('[data-res]');
+    await withLoading(b, 'جارٍ البحث', async () => {
+      try {
+        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=eg&accept-language=ar&q=${encodeURIComponent(q)}`); if (!r.ok) throw 0; const js = await r.json();
+        box.classList.remove('hide'); box.innerHTML = js.length ? js.map((x, i) => `<button type="button" class="sr" data-i="${i}">${ic('map-pin')}<span>${esc(x.display_name)}</span></button>`).join('') : `<div class="hint">لا توجد نتائج. جرّب اسمًا آخر أو انقر على الخريطة.</div>`; refreshIcons();
+        box.querySelectorAll('.sr').forEach(s => s.onclick = () => { const x = js[+s.dataset.i]; set(+x.lat, +x.lon, 15); box.classList.add('hide'); });
+      } catch { showToast('خدمة البحث عن العناوين غير متاحة الآن. يمكنك النقر على الخريطة مباشرة.', 'warn'); }
+    });
+  };
+  root.querySelector('[data-s]').onclick = doSearch; root.querySelector('[data-q]').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doSearch(); } });
+  return ctl;
+}
+async function pickLocationModal() {
+  let ctl; const res = await openModal({ type: 'custom', title: 'تحديد موقعك على الخريطة', persistent: true, html: `<div id="pk"></div><div class="row" style="margin-top:14px;justify-content:flex-end"><button class="btn btn-p" id="pk-ok">${ic('check')}اعتماد هذا الموقع</button></div>`,
+    onOpen: (m, close) => { ctl = mountPicker('pk', { lat: S.userLoc?.lat, lng: S.userLoc?.lng, height: 320 }); m.querySelector('#pk-ok').onclick = () => { if (ctl.lat == null) { showToast('حدد موقعًا على الخريطة أولًا.', 'warn'); return; } close(true); }; } });
+  if (res && ctl.lat != null) { saveLoc({ lat: ctl.lat, lng: ctl.lng, source: 'manual' }); return true; } return false;
+}
+/* ===================== 4. إدارة الجلسة ===================== */
+/* ملاحظة أمنية: بدون Firebase Authentication، معرف المستخدم المخزن في المتصفح ليس إثباتًا حقيقيًا للهوية،
+   وقواعد Firestore لا تستطيع التمييز بين المستخدمين. كلمات المرور تُخزن كـ PBKDF2 hash مع salt في مجموعة credentials. */
+const getCurrentUser = () => S.user;
+const isProvider = () => S.user?.accountType === 'provider';
+const isCustomer = () => S.user?.accountType === 'customer';
+async function loadFavs() { try { const a = await dbList('favorites', where('userId', '==', S.user.id), limit(400)); S.favs = new Set(a.map(f => `${f.itemType}_${f.itemId}`)); } catch { S.favs = new Set(); } }
+async function loadSession() {
+  const uid = localStorage.getItem('herfa_uid'); if (!uid) return;
+  try {
+    const u = await dbGet('users', uid); if (!u) { localStorage.removeItem('herfa_uid'); return; }
+    S.user = u; S.provider = u.accountType === 'provider' ? await dbGet('providers', uid) : null; await loadFavs(); startListeners();
+  } catch (e) { S.sessionErr = e; console.error(e); }
+}
+function stopListeners() { S.persist.forEach(u => { try { u(); } catch {} }); S.persist = []; S.unreadNotif = 0; S.unreadMsgs = 0; }
+function startListeners() {
+  stopListeners(); const uid = S.user.id;
+  S.persist.push(dbListenCol('notifications', [where('userId', '==', uid), where('isRead', '==', false)], a => { S.unreadNotif = a.length; updateBadges(); }, null, true));
+  S.persist.push(dbListenCol('conversations', [where('participantIds', 'array-contains', uid), limit(50)], a => { S.unreadMsgs = a.reduce((s, c) => s + (c.unread?.[uid] || 0), 0); updateBadges(); }, null, true));
+}
+function updateBadges() {
+  $$('[data-badge]').forEach(b => { const n = b.dataset.badge === 'notif' ? S.unreadNotif : S.unreadMsgs; b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); });
+}
+function logout() { stopListeners(); localStorage.removeItem('herfa_uid'); S.user = null; S.provider = null; S.favs = new Set(); S.drafts = {}; showToast('تم تسجيل الخروج', 'info'); navigateTo('/home'); }
+async function notify(userId, type, title, body, targetPath) {
+  try { await dbAdd('notifications', { userId, type, title, body, targetPath, isRead: false }); } catch (e) { console.warn('notify failed', e); }
+}
+async function getUserLite(uid) {
+  if (S.userCache.has(uid)) return S.userCache.get(uid);
+  const u = await dbGet('users', uid); const r = u ? { id: u.id, name: u.name, photoBase64: u.photoBase64 || '', accountType: u.accountType } : { id: uid, name: 'مستخدم', photoBase64: '' };
+  S.userCache.set(uid, r); return r;
+}
+const normPhone = s => { let p = toEn(s).replace(/[\s\-()]/g, ''); if (p.startsWith('+20')) p = '0' + p.slice(3); else if (p.startsWith('0020')) p = '0' + p.slice(4); return p; };
+const isPhone = p => /^01[0125]\d{8}$/.test(p);
+const isEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/* ===================== 6. نظام التنقل ===================== */
+const ROUTES = {};
+function parseHash() {
+  const h = location.hash.slice(1) || '/home'; const [p, q] = h.split('?'); const parts = p.split('/').filter(Boolean);
+  return { name: parts[0] || 'home', params: parts.slice(1), query: Object.fromEntries(new URLSearchParams(q || '')) };
+}
+function navigateTo(path) { const h = '#' + (path.startsWith('/') ? path : '/' + path); if (location.hash === h) renderPage(); else location.hash = h; }
+const qs = o => { const p = new URLSearchParams(); Object.entries(o).forEach(([k, v]) => { if (v !== '' && v != null) p.set(k, v); }); const s = p.toString(); return s ? '?' + s : ''; };
+const stale = tok => tok !== S.navTok;
+function homeFor() { return isProvider() ? (S.provider ? '/provider-dashboard' : '/provider-setup') : '/dashboard'; }
+function afterAuth() { const r = S.returnTo; S.returnTo = null; if (r && r !== '#/login' && r !== '#/register') location.hash = r; else navigateTo(homeFor()); }
+async function renderPage() {
+  S.cleanups.forEach(f => { try { f(); } catch {} }); S.cleanups = []; closeDD(); S.ddMap.clear(); S.page = {};
+  const tok = ++S.navTok; const ctx = parseHash(); const r = ROUTES[ctx.name] || ROUTES.home;
+  if (r.auth && !S.user) { S.returnTo = location.hash; showToast('سجّل الدخول للمتابعة', 'info'); location.hash = '#/login'; return; }
+  if (r.guest && S.user) { navigateTo(homeFor()); return; }
+  if (r.role && S.user && S.user.accountType !== r.role) { showToast('هذه الصفحة غير متاحة لنوع حسابك', 'warn'); navigateTo(homeFor()); return; }
+  if (r.role === 'provider' && !S.provider && ctx.name !== 'provider-setup' && S.user) { navigateTo('/provider-setup'); return; }
+  document.body.classList.toggle('has-bnav', !!S.user); document.body.classList.toggle('no-bnav', !S.user);
+  renderHeader(ctx); renderBottomNav(ctx); $('#ftr').innerHTML = (ctx.name === 'home' || (!S.user && ['search', 'map'].includes(ctx.name) === false && false)) ? footerHtml() : '';
+  const v = $('#view'); v.innerHTML = ''; window.scrollTo(0, 0); document.title = 'حرفة | منصة الحرفيين والخدمات المنزلية في مصر';
+  try { await r.fn(ctx, tok); } catch (e) { if (!stale(tok)) { console.error(e); v.innerHTML = `<div class="container page">${errorBox(friendlyError(e))}</div>`; refreshIcons(); } }
+  if (!stale(tok)) { refreshIcons(); updateBadges(); }
+}
+function renderHeader(ctx) {
+  const u = S.user; const n = ctx.name; const on = (...a) => a.includes(n) ? 'on' : '';
+  let links = '';
+  if (!u) links = `<a href="#/home" class="${on('home')}">الرئيسية</a><a href="#/search" class="${on('search', 'map')}">استكشف الخدمات</a><button data-act="how">كيف تعمل حرفة؟</button>`;
+  else if (isProvider()) links = `<a href="#/provider-dashboard" class="${on('provider-dashboard')}">لوحتي</a><a href="#/provider-orders" class="${on('provider-orders', 'order')}">الطلبات</a><a href="#/services" class="${on('services', 'service-edit')}">خدماتي</a><a href="#/messages" class="${on('messages', 'chat')}">المحادثات</a>`;
+  else links = `<a href="#/dashboard" class="${on('dashboard')}">لوحتي</a><a href="#/search" class="${on('search', 'map')}">استكشف الخدمات</a><a href="#/orders" class="${on('orders', 'order')}">طلباتي</a><a href="#/messages" class="${on('messages', 'chat')}">المحادثات</a><a href="#/favorites" class="${on('favorites')}">المفضلة</a>`;
+  const end = u ? `<a class="iconbtn" href="#/notifications" aria-label="الإشعارات">${ic('bell')}<span class="dot hide" data-badge="notif"></span></a><a href="#/profile" class="hide-m row" aria-label="حسابي">${avatar(u.photoBase64, u.name, 42)}</a><button class="btn btn-n btn-sm hide-m" data-act="logout">${ic('log-out')}خروج</button>`
+    : `<a class="btn btn-t hide-m" href="#/login">تسجيل الدخول</a><a class="btn btn-p btn-sm hide-m" href="#/register">إنشاء حساب</a><button class="iconbtn menu-btn" data-act="menu" aria-label="القائمة">${ic('menu')}</button>`;
+  $('#hdr').innerHTML = `<div class="container"><a class="logo" href="#/home" aria-label="حرفة - الرئيسية"><img src="logo1.png" alt="حرفة" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-fb',textContent:'حرفة'}))"></a><nav class="nav" aria-label="روابط الموقع">${links}</nav><div class="hdr-end">${end}</div></div>`;
+}
+function renderBottomNav(ctx) {
+  const nb = $('#bnav'); if (!S.user) { nb.innerHTML = ''; return; } const n = ctx.name;
+  const items = isProvider()
+    ? [['/provider-dashboard', 'house', 'الرئيسية', ['provider-dashboard']], ['/provider-orders', 'clipboard-list', 'الطلبات', ['provider-orders', 'order']], ['/services', 'briefcase', 'الخدمات', ['services', 'service-edit']], ['/messages', 'message-circle', 'المحادثات', ['messages', 'chat'], 'msgs'], ['/profile', 'user', 'حسابي', ['profile', 'provider-setup', 'notifications']]]
+    : [['/dashboard', 'house', 'الرئيسية', ['dashboard']], ['/search', 'search', 'البحث', ['search', 'map', 'provider', 'request']], ['/orders', 'clipboard-list', 'طلباتي', ['orders', 'order', 'schedule', 'payment', 'payment-done']], ['/messages', 'message-circle', 'المحادثات', ['messages', 'chat'], 'msgs'], ['/profile', 'user', 'حسابي', ['profile', 'favorites', 'notifications']]];
+  nb.innerHTML = `<div class="in">${items.map(i => `<a href="#${i[0]}" class="${i[3].includes(n) ? 'on' : ''}">${ic(i[1])}<span>${i[2]}</span>${i[4] ? `<span class="dot hide" data-badge="${i[4]}"></span>` : ''}</a>`).join('')}</div>`;
+}
+function footerHtml() {
+  return `<div class="foot"><div class="container"><div class="cols"><div><h4>حرفة</h4><p class="sm">منصة تربط العملاء بالحرفيين ومقدمي الخدمات المنزلية في مصر، من البحث وحتى متابعة الطلب.</p></div><div><h4>روابط</h4><a href="#/home">الرئيسية</a><a href="#/search">استكشف الخدمات</a><a href="#/map">الخريطة</a><a href="#/register?type=provider">انضم كحرفي</a></div><div><h4>الحساب</h4><a href="#/login">تسجيل الدخول</a><a href="#/register">إنشاء حساب</a><a href="#" data-act="terms">شروط الاستخدام</a></div></div><div class="copy">© ${new Date().getFullYear()} حرفة. جميع الحقوق محفوظة.</div></div></div>`;
+}
+window.addEventListener('hashchange', renderPage);
+window.addEventListener('offline', () => showToast('انقطع الاتصال بالإنترنت', 'warn'));
+window.addEventListener('online', () => showToast('عاد الاتصال بالإنترنت', 'ok'));
+
+/* ===================== الأحداث العامة ===================== */
+const ACT = {}, FORMS = {};
+function handleAct(e) {
+  const el = e.target.closest('[data-act]'); if (!el) return; const f = ACT[el.dataset.act]; if (f) { if (el.tagName === 'BUTTON' || el.dataset.prevent) e.preventDefault(); f(el, e); }
+}
+document.addEventListener('click', handleAct);
+document.addEventListener('submit', e => { const f = e.target.closest('[data-form]'); if (!f) return; e.preventDefault(); FORMS[f.dataset.form]?.(f, e); });
+ACT.go = el => navigateTo(el.dataset.to);
+ACT['dd-toggle'] = el => openDD(el.dataset.id);
+ACT.retry = () => renderPage();
+ACT.logout = () => confirmBox('تسجيل الخروج', 'هل تريد تسجيل الخروج من حسابك؟', 'تسجيل الخروج', false).then(ok => ok && logout());
+ACT.eye = el => { const i = el.parentElement.querySelector('input'); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; el.innerHTML = ic(show ? 'eye-off' : 'eye'); refreshIcons(); };
+ACT.multi = el => { const box = el.closest('[data-multi]'); let vals = box.dataset.vals.split(',').filter(Boolean); const v = el.dataset.v; vals = vals.includes(v) ? vals.filter(x => x !== v) : [...vals, v]; box.dataset.vals = vals.join(','); el.classList.toggle('on'); box.dispatchEvent(new CustomEvent('multichange', { bubbles: true })); };
+ACT.radio = el => { const box = el.closest('[data-radio]'); box.dataset.value = el.dataset.v; $$('.opt', box).forEach(o => o.classList.toggle('on', o === el)); if (box.dataset.radio === 'acct') $('#prov-extra')?.classList.toggle('hide', el.dataset.v !== 'provider'); };
+ACT.how = () => { const go = () => $('#how')?.scrollIntoView({ behavior: 'smooth' }); if (parseHash().name !== 'home') { navigateTo('/home'); setTimeout(go, 400); } else go(); };
+ACT.menu = () => {
+  const r = $('#drawer-root'); r.innerHTML = `<div class="scrim" data-act="menu-close"></div><aside class="drawer" role="dialog" aria-label="القائمة"><div class="row between"><b>القائمة</b><button class="iconbtn" data-act="menu-close" aria-label="إغلاق">${ic('x')}</button></div><a href="#/home" data-act="menu-close">${ic('house')}الرئيسية</a><a href="#/search" data-act="menu-close">${ic('search')}استكشف الخدمات</a><a href="#/map" data-act="menu-close">${ic('map')}الخريطة</a><button class="l" data-act="menu-how">${ic('circle-help')}كيف تعمل حرفة؟</button><div style="flex:1"></div><a class="btn btn-o" href="#/login" data-act="menu-close">تسجيل الدخول</a><a class="btn btn-p" href="#/register" data-act="menu-close">إنشاء حساب</a></aside>`; refreshIcons();
+};
+ACT['menu-close'] = () => { $('#drawer-root').innerHTML = ''; };
+ACT['menu-how'] = () => { ACT['menu-close'](); ACT.how(); };
+ACT.terms = (el, e) => { e?.preventDefault(); openModal({ type: 'custom', title: 'شروط الاستخدام', html: `<div class="stack sm"><p>حرفة منصة وسيطة تربط العملاء بالحرفيين ومقدمي الخدمات، وليست طرفًا في تنفيذ الخدمة نفسها.</p><p><b>الأسعار والاتفاق:</b> يُتفق على السعر بين العميل والحرفي داخل المنصة، ولا يُعتمد السعر النهائي إلا بعد قبول أحد الطرفين لعرض الطرف الآخر.</p><p><b>الدفع:</b> يتم التحويل إلى المحفظة المعتمدة المعروضة في صفحة الدفع، ويُرفع إيصال التحويل ليُراجع. رفع الإيصال لا يعني قبول الدفع، ويظل الطلب قيد المراجعة حتى تتم مراجعته.</p><p><b>المسؤولية:</b> يلتزم كل مستخدم بصحة بياناته وبالتعامل باحترام مع الطرف الآخر، ويحق للمنصة إيقاف أي حساب يخالف ذلك.</p><p><b>الخصوصية:</b> تُستخدم بياناتك وموقعك لتشغيل الخدمة فقط، ولا يظهر رقم هاتفك للعامة.</p></div>` }); };
+ACT.fav = async (el) => {
+  if (!S.user) { S.returnTo = location.hash; showToast('سجّل الدخول لاستخدام المفضلة', 'info'); navigateTo('/login'); return; }
+  if (el.disabled) return; const type = el.dataset.type, id = el.dataset.id, key = `${type}_${id}`, fid = `${S.user.id}_${key}`; const had = S.favs.has(key); el.disabled = true;
+  try {
+    if (had) { await dbDelete('favorites', fid); S.favs.delete(key); showToast('أُزيل من المفضلة', 'info'); } else { await dbSet(['favorites', fid], { userId: S.user.id, itemType: type, itemId: id, createdAt: serverTimestamp() }); S.favs.add(key); showToast('أُضيف إلى المفضلة', 'ok'); }
+    $$(`[data-act="fav"][data-type="${type}"][data-id="${id}"]`).forEach(b => { b.classList.toggle('on', !had); b.setAttribute('aria-pressed', String(!had)); });
+    if (parseHash().name === 'favorites' && had) { el.closest('[data-fav-card]')?.remove(); if (!$('[data-fav-card]')) renderPage(); }
+  } catch (e) { showToast(friendlyError(e), 'err'); } finally { el.disabled = false; }
+};
+const favBtn = (type, id) => isProvider() ? '' : `<button class="favbtn ${S.favs.has(type + '_' + id) ? 'on' : ''}" data-act="fav" data-type="${type}" data-id="${id}" aria-label="المفضلة" aria-pressed="${S.favs.has(type + '_' + id)}">${ic('heart')}</button>`;
+function providerCard(p, dist) {
+  const c = catOf(p.mainCategoryId);
+  return `<article class="pcard" data-fav-card>${favBtn('provider', p.id)}<div class="top" style="padding-inline-end:38px">${avatar(p.photoBase64, p.name, 60)}<div class="grow"><h3>${esc(p.name)}</h3><div class="sm muted">${esc(p.shopName || '')}</div></div></div><div class="meta"><span>${ic(c?.icon || 'wrench')}${esc(c?.name || '')}</span><span>${ic('map-pin')}${esc([p.area, p.governorate].filter(Boolean).join('، '))}</span>${dist != null ? `<span>${ic('navigation')}${fmtDist(dist)}</span>` : ''}</div>${ratingLine(p)}<div class="acts"><a class="btn btn-n btn-sm" href="#/provider/${p.id}">عرض الملف</a>${(!S.user || isCustomer()) ? `<a class="btn btn-p btn-sm" href="#/request/${p.id}">اطلب الخدمة</a>` : ''}</div></article>`;
+}
+const backLink = (to, text = 'رجوع') => `<a class="back" href="#${to}">${ic('arrow-right')}${text}</a>`;
+const showFormErr = (msg, id = 'form-err') => { const e = document.getElementById(id); if (e) { e.classList.remove('hide'); e.innerHTML = `${ic('circle-alert')}<span>${esc(msg)}</span>`; refreshIcons(); e.scrollIntoView({ block: 'nearest' }); } };
+
+/* ===================== 7. الصفحة الرئيسية ===================== */
+const HERO_ART = `<svg class="hero-art" viewBox="0 0 480 420" role="img" aria-label="رسم يوضح البحث عن الحرفيين ضمن نطاق 5 و10 و15 كيلومترًا"><rect width="480" height="420" rx="24" fill="#E8F3EC"/><g stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"><path d="M-10 120 L490 80"/><path d="M-10 300 L490 340"/><path d="M110 -10 L150 430"/><path d="M360 -10 L330 430"/><path d="M-10 210 L490 200" stroke-width="7"/></g><g fill="none" stroke="#16834A" stroke-width="2" stroke-dasharray="7 7"><circle cx="240" cy="210" r="62"/><circle cx="240" cy="210" r="118"/><circle cx="240" cy="210" r="176" opacity=".6"/></g><g font-family="Cairo,sans-serif" font-size="14" font-weight="700" fill="#11683B"><text x="240" y="142" text-anchor="middle">٥ كم</text><text x="240" y="86" text-anchor="middle">١٠ كم</text><text x="240" y="28" text-anchor="middle">١٥ كم</text></g><circle cx="240" cy="210" r="22" fill="#2B6CB0" opacity=".18"/><circle cx="240" cy="210" r="9" fill="#2B6CB0" stroke="#fff" stroke-width="3"/>${[[180, 175], [292, 232], [205, 290], [330, 140], [120, 250]].map(([x, y]) => `<g transform="translate(${x} ${y})"><path d="M0 0 C-17 -20 -20 -34 -20 -40 a20 20 0 1 1 40 0 C20 -34 17 -20 0 0Z" fill="#16834A" stroke="#fff" stroke-width="3"/><path d="M-6 -44 l12 12 M6 -44 l-12 12" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></g>`).join('')}</svg>`;
+ROUTES.home = { fn: async (ctx, tok) => {
+  const v = $('#view');
+  v.innerHTML = `<section class="hero"><div class="container"><div><h1>الحرفي المناسب ليك، أقرب مما تتخيل</h1><p class="lead">ابحث عن سباك أو كهربائي أو نجار قريب منك، شوف أعماله وتقييماته، اتفق معاه على السعر، وحدد الموعد وتابع طلبك من مكان واحد.</p>
+  <form class="searchbox" data-form="hero-search"><input class="input" id="hq" placeholder="ما الحرفة التي تحتاجها؟ مثل: سباك" aria-label="الحرفة">${dd({ name: 'hr', options: RADII, value: '10', small: false })}<button class="btn btn-p" type="submit">${ic('search')}ابحث الآن</button></form>
+  <div class="row wrap" style="margin-top:16px"><a class="btn btn-o" href="#/register?type=provider">${ic('hard-hat')}سجّل كمقدم خدمة</a><a class="btn btn-t" href="#/map">${ic('map')}افتح الخريطة</a></div></div>${HERO_ART}</div></section>
+  <section class="sec"><div class="container"><div class="sec-h"><h2>اختر نوع الحرفة</h2><p class="muted">كل تصنيف يفتح لك حرفيين متخصصين في هذا المجال.</p></div><div class="catgrid">${CATS.map(c => `<a class="cat" href="#/search?cat=${c.id}"><span class="ci">${ic(c.icon)}</span><span>${c.name}</span></a>`).join('')}</div></div></section>
+  <section class="sec alt"><div class="container"><div class="row between wrap sec-h" style="max-width:none"><div><h2>حرفيون على المنصة</h2><p class="muted">من انضموا إلى حرفة مؤخرًا وبدأوا في استقبال الطلبات.</p></div><a class="btn btn-n" href="#/search">عرض الكل</a></div><div id="featured">${skeletons(4, 190)}</div></div></section>
+  <section class="sec" id="how"><div class="container"><div class="sec-h"><h2>كيف تعمل حرفة؟</h2><p class="muted">أربع خطوات من الحاجة إلى الخدمة.</p></div><div class="steps4">${[['ابحث عن الخدمة المناسبة', 'اختر الحرفة وحدد نطاق البحث 5 أو 10 أو 15 كم، أو شاهد كل النتائج على الخريطة.'], ['اختر الحرفي', 'افتح ملفه الشخصي، واطّلع على خدماته وأعماله وتقييمات العملاء السابقين.'], ['تفاوض على السعر', 'اشرح ما تحتاجه، ويقدّم الحرفي سعرًا. اقبله أو اقترح سعرًا بديلًا حتى تتفقا.'], ['حدد الموعد وتابع الطلب', 'اختر الموعد، حوّل المبلغ وارفع الإيصال، وتابع حالة الطلب حتى يكتمل.']].map((s, i) => `<div class="st"><div class="n">${i + 1}</div><h3 style="margin-bottom:6px;font-size:1.02rem">${s[0]}</h3><p>${s[1]}</p></div>`).join('')}</div></div></section>
+  <section class="sec" style="padding-top:0"><div class="container"><div class="cta"><div><h2>هل أنت حرفي أو تقدم خدمات منزلية؟</h2><p>أنشئ ملف نشاطك، اعرض خدماتك وأعمالك، واستقبل طلبات العملاء القريبين منك.</p></div><a class="btn btn-lg" href="#/register?type=provider">${ic('hard-hat')}انضم إلى حرفة</a></div></div></section>`;
+  refreshIcons();
+  try {
+    const ps = await dbList('providers', limit(8)); if (stale(tok)) return; ps.sort((a, b) => (b.ratingCount || 0) - (a.ratingCount || 0) || tsMs(b.createdAt) - tsMs(a.createdAt));
+    $('#featured').innerHTML = ps.length ? `<div class="pgrid">${ps.map(p => providerCard(p)).join('')}</div>` : emptyBox('users', 'لم ينضم حرفيون بعد', 'ستظهر هنا ملفات الحرفيين فور اكتمال تسجيلهم على المنصة.', `<a class="btn btn-p btn-sm" href="#/register?type=provider">كن أول حرفي</a>`);
+  } catch (e) { if (!stale(tok)) $('#featured').innerHTML = errorBox(friendlyError(e)); }
+  refreshIcons();
+} };
+FORMS['hero-search'] = () => navigateTo('/search' + qs({ q: val('hq'), r: ddv('hr') }));
+
+/* ===================== 8. تسجيل الدخول ===================== */
+const logoImg = (h = 56) => `<img src="logo.png" alt="حرفة" style="height:${h}px;width:auto" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-fb',textContent:'حرفة'}))">`;
+ROUTES.login = { guest: true, fn: async () => {
+  $('#view').innerHTML = `<div class="login-wrap"><div class="login-side"><h2>كل حرفي تحتاجه، وكل طلباتك في مكان واحد</h2><ul class="stack" style="gap:12px"><li>${ic('map-pin')}<span>ابحث عن حرفيين بالقرب منك على الخريطة</span></li><li>${ic('handshake')}<span>تفاوض على السعر وسجّل الاتفاق بوضوح</span></li><li>${ic('clipboard-check')}<span>تابع حالة طلبك خطوة بخطوة</span></li></ul></div>
+  <div class="login-main"><div class="box stack" style="gap:20px">${logoImg(60)}<div><h1 style="font-size:1.7rem">أهلًا بعودتك</h1><p class="muted">سجّل الدخول لمتابعة طلباتك ومحادثاتك.</p></div>
+  <div class="alert err hide" id="form-err" role="alert"></div>
+  <form class="formgrid" data-form="login" novalidate>${field('phone', 'رقم الهاتف', input('phone', { type: 'tel', ph: '01XXXXXXXXX', attrs: 'inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"' }), { req: true })}${pwField('pw', 'كلمة المرور', 'أدخل كلمة المرور')}<button class="btn btn-p btn-lg btn-b" type="submit">تسجيل الدخول</button></form>
+  <p class="sm muted" style="text-align:center">ليس لديك حساب؟ <a class="b" style="color:var(--g)" href="#/register">أنشئ حسابًا جديدًا</a></p></div></div></div>`;
+} };
+FORMS.login = async (form) => {
+  const btn = form.querySelector('[type=submit]'); clearErrs(form); $('#form-err').classList.add('hide');
+  const phone = normPhone(val('phone')), pw = $('#pw').value; let bad = false;
+  if (!isPhone(phone)) { setErr('phone', 'أدخل رقم هاتف مصري صحيحًا من 11 رقمًا'); bad = true; } if (!pw) { setErr('pw', 'أدخل كلمة المرور'); bad = true; }
+  if (bad) return focusFirstErr();
+  await withLoading(btn, 'جارٍ تسجيل الدخول', async () => {
+    try {
+      const u = (await dbList('users', where('phone', '==', phone), limit(1)))[0]; const cred = u && await dbGet('credentials', u.id);
+      if (!u || !cred || await hashPassword(pw, cred.salt, cred.iter) !== cred.hash) throw new UserErr('رقم الهاتف أو كلمة المرور غير صحيحة.');
+      localStorage.setItem('herfa_uid', u.id); await loadSession(); showToast(`أهلًا ${u.name}`, 'ok'); afterAuth();
+    } catch (e) { showFormErr(friendlyError(e)); }
+  });
+};
+
+/* ===================== 9. إنشاء الحساب ===================== */
+ROUTES.register = { guest: true, fn: async (ctx) => {
+  const type = ctx.query.type === 'provider' ? 'provider' : 'customer'; const d = S.drafts.reg || {};
+  $('#view').innerHTML = `<div class="container page" style="max-width:760px"><div class="card" style="padding:28px"><div class="stack" style="gap:6px;margin-bottom:20px"><h1 style="font-size:1.7rem">ابدأ رحلتك مع حرفة</h1><p class="muted">اختر نوع الحساب ثم أكمل بياناتك.</p></div>
+  <div class="alert err hide" id="form-err" role="alert" style="margin-bottom:14px"></div>
+  <form class="formgrid" data-form="register" novalidate>
+   ${radioCards('acct', [{ value: 'customer', icon: 'user-round-search', title: 'عميل', desc: 'أبحث عن حرفيين وأطلب خدمات' }, { value: 'provider', icon: 'hard-hat', title: 'حرفي / مقدم خدمة', desc: 'أنشئ ملف نشاطي وأستقبل الطلبات' }], d.acct || type)}
+   <div class="grid2">${field('name', 'الاسم الكامل', input('name', { v: d.name, attrs: 'autocomplete="name"' }), { req: true })}${field('phone', 'رقم الهاتف', input('phone', { type: 'tel', v: d.phone, ph: '01XXXXXXXXX', attrs: 'inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"' }), { req: true })}</div>
+   ${field('email', 'البريد الإلكتروني (اختياري)', input('email', { type: 'email', v: d.email, attrs: 'autocomplete="email" dir="ltr" style="text-align:right"' }))}
+   <div class="grid2">${field('gov', 'المحافظة', dd({ name: 'gov', options: govOpts, value: d.gov || '', placeholder: 'اختر المحافظة', search: true }), { req: true })}${field('area', 'المنطقة', input('area', { v: d.area, ph: 'مثال: حي الجامعة' }), { req: true })}</div>
+   <div class="grid2" id="prov-extra" style="${(d.acct || type) === 'provider' ? '' : 'display:none'}">${field('shop', 'اسم المحل أو النشاط', input('shop', { v: d.shop }))}${field('cat', 'نوع الحرفة الأساسية', dd({ name: 'cat', options: catOpts(false), value: d.cat || '', placeholder: 'اختر الحرفة' }))}</div>
+   <div class="grid2">${pwField('pw', 'كلمة المرور', '8 أحرف على الأقل')}${pwField('pw2', 'تأكيد كلمة المرور')}</div>
+   <div class="field" data-f="terms"><label class="check"><input type="checkbox" id="terms"><span>أوافق على <a href="#" data-act="terms" style="color:var(--g);font-weight:700;text-decoration:underline">شروط الاستخدام</a></span></label><div class="ferr" id="err-terms"></div></div>
+   <button class="btn btn-p btn-lg btn-b" type="submit">إنشاء الحساب</button></form>
+  <p class="sm muted" style="text-align:center;margin-top:16px">لديك حساب بالفعل؟ <a class="b" style="color:var(--g)" href="#/login">سجّل الدخول</a></p></div></div>`;
+  $('#prov-extra').classList.toggle('hide', (d.acct || type) !== 'provider'); $('#prov-extra').style.display = '';
+} };
+FORMS.register = async (form) => {
+  const btn = form.querySelector('[type=submit]'); clearErrs(form); $('#form-err').classList.add('hide');
+  const v = { acct: radiov('acct') || 'customer', name: val('name'), phone: normPhone(val('phone')), email: val('email'), gov: ddv('gov'), area: val('area'), shop: val('shop'), cat: ddv('cat'), pw: $('#pw').value, pw2: $('#pw2').value, terms: $('#terms').checked };
+  S.drafts.reg = { ...v, pw: '', pw2: '' }; let bad = false; const E = (k, m) => { setErr(k, m); bad = true; };
+  if (v.name.length < 3) E('name', 'اكتب اسمك الكامل (3 أحرف على الأقل)'); if (!isPhone(v.phone)) E('phone', 'أدخل رقم هاتف مصري صحيحًا من 11 رقمًا'); if (v.email && !isEmail(v.email)) E('email', 'صيغة البريد الإلكتروني غير صحيحة');
+  if (!v.gov) E('gov', 'اختر المحافظة'); if (!v.area) E('area', 'اكتب اسم المنطقة'); if (v.pw.length < 8) E('pw', 'كلمة المرور يجب ألا تقل عن 8 أحرف'); if (v.pw2 !== v.pw) E('pw2', 'كلمتا المرور غير متطابقتين'); if (!v.terms) E('terms', 'يجب الموافقة على شروط الاستخدام');
+  if (bad) return focusFirstErr();
+  await withLoading(btn, 'جارٍ إنشاء الحساب', async () => {
+    let uid = null;
+    try {
+      if ((await dbList('users', where('phone', '==', v.phone), limit(1))).length) { setErr('phone', 'هذا الرقم مسجل بالفعل. سجّل الدخول بدلًا من ذلك.'); focusFirstErr(); return; }
+      uid = await dbAdd('users', { name: v.name, phone: v.phone, email: v.email, accountType: v.acct, photoBase64: '', governorate: v.gov, area: v.area, bio: '', updatedAt: serverTimestamp() });
+      const salt = newSalt(), iter = 150000; const hash = await hashPassword(v.pw, salt, iter);
+      await dbSet(['credentials', uid], { hash, salt, iter, createdAt: serverTimestamp() });
+      localStorage.setItem('herfa_uid', uid); await loadSession(); S.drafts.reg = null;
+      if (v.acct === 'provider') { S.drafts.setup = { shop: v.shop, cat: v.cat }; showToast('تم إنشاء حسابك. أكمل بيانات نشاطك', 'ok'); navigateTo('/provider-setup'); }
+      else { showToast('تم إنشاء حسابك بنجاح', 'ok'); afterAuth(); }
+    } catch (e) { if (uid && !S.user) { try { await dbDelete('users', uid); } catch {} } showFormErr(friendlyError(e)); }
+  });
+};
+/* ===================== 10. استكمال ملف الحرفي ===================== */
+ROUTES['provider-setup'] = { auth: true, role: 'provider', fn: async (ctx, tok) => {
+  const u = S.user; const p = S.provider; const dr = S.drafts.setup || {};
+  $('#view').innerHTML = `<div class="container page" style="max-width:860px">${skeletons(2, 260)}</div>`;
+  let works = []; if (p) { try { works = await dbList(['providers', u.id, 'works'], limit(8)); } catch (e) { $('#view').innerHTML = `<div class="container page">${errorBox(friendlyError(e))}</div>`; refreshIcons(); return; } }
+  if (stale(tok)) return;
+  const mainCat = p?.mainCategoryId || dr.cat || '';
+  $('#view').innerHTML = `<div class="container page" style="max-width:860px"><div class="pagehead"><div><h1>${p ? 'تعديل ملف النشاط' : 'أكمل بيانات نشاطك'}</h1><p class="muted">كلما كان ملفك أوضح، زادت فرص وصول العملاء إليك.</p></div></div>
+  <div class="alert err hide" id="form-err" role="alert" style="margin-bottom:14px"></div>
+  <form class="stack" style="gap:18px" data-form="provider-setup" novalidate>
+   <div class="card"><h3>البيانات الأساسية</h3><div class="formgrid">
+     <div class="field"><span class="label">الصورة الشخصية</span><div id="f-avatar"></div></div>
+     <div class="grid2">${field('name', 'الاسم الكامل', input('name', { v: p?.name || u.name }), { req: true })}${field('phone', 'رقم الهاتف', input('phone', { v: u.phone, attrs: 'disabled dir="ltr" style="text-align:right"' }), { hint: 'يمكن تغيير الرقم من صفحة حسابي.' })}</div>
+     <div class="grid2">${field('shop', 'اسم المحل أو النشاط', input('shop', { v: p?.shopName || dr.shop || '' }), { req: true })}${field('cat', 'نوع الحرفة الأساسية', dd({ name: 'cat', options: catOpts(false), value: mainCat, placeholder: 'اختر الحرفة' }), { req: true })}</div>
+     <div class="field"><span class="label">تخصصات إضافية (اختياري)</span>${multiChips('xcats', CATS.map(c => ({ value: c.id, label: c.name })), (p?.categoryIds || []).filter(x => x !== p?.mainCategoryId))}</div>
+     ${field('exp', 'سنوات الخبرة (اختياري)', input('exp', { type: 'number', v: p?.experienceYears ?? '', attrs: 'min="0" max="70" inputmode="numeric"' }))}
+     ${field('bio', 'نبذة تعريفية', textarea('bio', { v: p?.description || '', ph: 'عرّف العملاء بخبرتك ونوع الأعمال التي تنفذها...', attrs: 'maxlength="800"' }), { req: true })}
+   </div></div>
+   <div class="card"><h3>صور الأعمال السابقة</h3><p class="hint" style="margin-bottom:10px">حتى 4 صور. تُضغط تلقائيًا قبل الحفظ.</p><div id="f-works"></div></div>
+   <div class="card"><h3>موقع النشاط</h3><div class="formgrid">
+     <div class="grid2">${field('gov', 'المحافظة', dd({ name: 'gov', options: govOpts, value: p?.governorate || u.governorate || '', placeholder: 'اختر المحافظة', search: true }), { req: true })}${field('area', 'المنطقة', input('area', { v: p?.area || u.area || '' }), { req: true })}</div>
+     ${field('addr', 'عنوان النشاط', input('addr', { v: p?.address || '', ph: 'الشارع، أقرب معلم' }), { req: true })}
+     ${field('sareas', 'مناطق تقديم الخدمة (اختياري)', input('sareas', { v: (p?.serviceAreas || []).join('، '), ph: 'افصل بين المناطق بفاصلة' }))}
+     <div class="field" data-f="loc"><span class="label">موقع النشاط على الخريطة <i style="color:var(--err);font-style:normal">*</i></span><div id="pk"></div><div class="ferr" id="err-loc"></div></div>
+   </div></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn btn-p btn-lg" type="submit">${ic('save')}${p ? 'حفظ التعديلات' : 'حفظ ومتابعة'}</button></div>
+  </form></div>`;
+  refreshIcons();
+  S.page.avatar = imgField('f-avatar', { max: 1, dim: 360, maxChars: 55000, initial: (p?.photoBase64 || u.photoBase64) ? [p?.photoBase64 || u.photoBase64] : [], label: 'رفع صورة' });
+  S.page.works = imgField('f-works', { max: 4, dim: 900, maxChars: 110000, initial: works.map(w => ({ id: w.id, data: w.imageBase64 })), label: 'إضافة صورة' });
+  S.page.works.orig = works.map(w => w.id);
+  S.page.ctl = mountPicker('pk', { lat: p?.latitude, lng: p?.longitude, height: 320 });
+} };
+FORMS['provider-setup'] = async (form) => {
+  const btn = form.querySelector('[type=submit]'); clearErrs(form); $('#form-err').classList.add('hide'); const u = S.user, old = S.provider;
+  const v = { name: val('name'), shop: val('shop'), cat: ddv('cat'), bio: val('bio'), gov: ddv('gov'), area: val('area'), addr: val('addr'), exp: val('exp'), x: multiv('xcats') }; const ctl = S.page.ctl; let bad = false; const E = (k, m) => { setErr(k, m); bad = true; };
+  if (v.name.length < 3) E('name', 'اكتب اسمك الكامل'); if (!v.shop) E('shop', 'اكتب اسم المحل أو النشاط'); if (!v.cat) E('cat', 'اختر الحرفة الأساسية'); if (v.bio.length < 10) E('bio', 'اكتب نبذة لا تقل عن 10 أحرف');
+  if (!v.gov) E('gov', 'اختر المحافظة'); if (!v.area) E('area', 'اكتب المنطقة'); if (!v.addr) E('addr', 'اكتب عنوان النشاط'); if (ctl.lat == null) E('loc', 'حدد موقع النشاط على الخريطة أو بالبحث عن العنوان');
+  if (v.exp && (isNaN(+v.exp) || +v.exp < 0 || +v.exp > 70)) E('exp', 'أدخل عدد سنوات صحيحًا');
+  if (bad) return focusFirstErr();
+  await withLoading(btn, 'جارٍ الحفظ', async () => {
+    try {
+      const photo = S.page.avatar.data()[0] || ''; const cats = [...new Set([v.cat, ...v.x])];
+      const data = { userId: u.id, name: v.name, photoBase64: photo, shopName: v.shop, mainCategoryId: v.cat, categoryIds: cats, description: v.bio, experienceYears: v.exp ? +v.exp : null, governorate: v.gov, area: v.area, address: v.addr,
+        latitude: ctl.lat, longitude: ctl.lng, serviceAreas: val('sareas').split(/[،,]/).map(s => s.trim()).filter(Boolean), serviceTitles: old?.serviceTitles || [], ratingAvg: old?.ratingAvg || 0, ratingCount: old?.ratingCount || 0, profileComplete: true, updatedAt: serverTimestamp() };
+      if (!old) data.createdAt = serverTimestamp();
+      await dbSet(['providers', u.id], data, true);
+      await dbUpdate(['users', u.id], { name: v.name, photoBase64: photo, governorate: v.gov, area: v.area });
+      const w = S.page.works; const keep = w.items.filter(i => i.id).map(i => i.id); const batch = writeBatch(db);
+      (w.orig || []).filter(id => !keep.includes(id)).forEach(id => batch.delete(dref('providers', u.id, 'works', id)));
+      w.items.filter(i => !i.id).forEach(i => batch.set(doc(col('providers', u.id, 'works')), { imageBase64: i.data, createdAt: serverTimestamp() }));
+      await batch.commit();
+      S.user = await dbGet('users', u.id); S.provider = await dbGet('providers', u.id); S.drafts.setup = null; S.userCache.delete(u.id);
+      showToast(old ? 'تم حفظ التعديلات' : 'اكتمل ملف نشاطك', 'ok'); navigateTo('/provider-dashboard');
+    } catch (e) { showFormErr(friendlyError(e)); }
+  });
+};
+
+/* ===================== 12. البحث والخريطة ===================== */
+async function fetchProviders(cat) { return dbList('providers', ...(cat ? [where('categoryIds', 'array-contains', cat)] : []), limit(200)); }
+function filterProviders(list, { q, r }) {
+  let out = list.map(p => ({ p, dist: (S.userLoc && p.latitude != null) ? haversine(S.userLoc.lat, S.userLoc.lng, p.latitude, p.longitude) : null }));
+  if (r !== 'all') { const km = +r; out = out.filter(x => x.dist != null && x.dist <= km); }
+  if (q) { const t = q.toLowerCase(); out = out.filter(({ p }) => [p.name, p.shopName, p.description, ...(p.categoryIds || []).map(i => catOf(i)?.name), ...(p.serviceTitles || [])].join(' ').toLowerCase().includes(t)); }
+  out.sort((a, b) => (a.dist != null && b.dist != null) ? a.dist - b.dist : (b.p.ratingAvg || 0) - (a.p.ratingAvg || 0));
+  return out;
+}
+function popupHtml(p, dist) {
+  const c = catOf(p.mainCategoryId);
+  return `<div class="pp"><div class="row">${avatar(p.photoBase64, p.name, 48)}<div class="grow"><b>${esc(p.name)}</b><div class="xs muted">${esc(p.shopName || '')}</div></div></div><div class="meta"><span>${ic(c?.icon || 'wrench')}${esc(c?.name || '')}</span>${dist != null ? `<span>${ic('navigation')}${fmtDist(dist)}</span>` : ''}</div>${ratingLine(p)}<div class="row"><a class="btn btn-n btn-sm grow" href="#/provider/${p.id}">الملف الشخصي</a>${(!S.user || isCustomer()) ? `<a class="btn btn-p btn-sm grow" href="#/request/${p.id}">اطلب الخدمة</a>` : ''}</div></div>`;
+}
+function buildProvidersMap(el, items, r) {
+  const loc = S.userLoc; const m = newMap(el, loc ? [loc.lat, loc.lng] : null, loc ? 12 : 6); const pts = [];
+  if (loc) { L.marker([loc.lat, loc.lng], { icon: L.divIcon({ className: '', html: '<div class="me-pin"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }) }).addTo(m).bindTooltip('موقعك'); pts.push([loc.lat, loc.lng]); if (r !== 'all') L.circle([loc.lat, loc.lng], { radius: +r * 1000, color: '#16834A', weight: 1.5, fillOpacity: .05 }).addTo(m); }
+  items.forEach(({ p, dist }) => {
+    if (p.latitude == null) return; const icon = L.divIcon({ className: '', html: `<div class="pin">${p.photoBase64 ? `<img src="${p.photoBase64}" alt="">` : `<b>${esc(initials(p.name))}</b>`}</div>`, iconSize: [44, 44], iconAnchor: [22, 54], popupAnchor: [0, -54] });
+    L.marker([p.latitude, p.longitude], { icon, title: p.name }).addTo(m).bindPopup(popupHtml(p, dist), { className: 'hp', maxWidth: 270 }); pts.push([p.latitude, p.longitude]);
+  });
+  if (pts.length > 1) m.fitBounds(pts, { padding: [50, 50], maxZoom: 15 }); else if (pts.length === 1) m.setView(pts[0], 14);
+  m.on('popupopen', e => { e.popup.getElement().addEventListener('click', handleAct); refreshIcons(); }); return m;
+}
+const locBarHtml = () => `<div class="row wrap" id="locbar"></div>`;
+function drawLocBar() {
+  const b = $('#locbar'); if (!b) return; const l = S.userLoc;
+  b.innerHTML = `<span class="badge ${l ? 'ok' : 'mute'}">${ic('map-pin')}${l ? 'تم تحديد موقعك' : 'لم يُحدد موقعك'}</span><button class="btn btn-o btn-sm" data-act="loc-me">${ic('locate-fixed')}موقعي الحالي</button><button class="btn btn-n btn-sm" data-act="loc-pick">${ic('map')}اختيار من الخريطة</button>`; refreshIcons();
+}
+ACT['loc-me'] = async el => { await withLoading(el, 'جارٍ التحديد', async () => { try { saveLoc({ ...(await geolocate()), source: 'gps' }); showToast('تم تحديد موقعك', 'ok'); S.page.rerun?.(); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+ACT['loc-pick'] = async () => { if (await pickLocationModal()) { showToast('تم اعتماد الموقع', 'ok'); S.page.rerun?.(); } };
+ACT['r-all'] = () => { S.page.setRadius?.('all'); };
+const needLocBox = () => `<div class="empty"><div class="ei">${ic('map-pin')}</div><h3>حدد موقعك لعرض الحرفيين القريبين</h3><p>للبحث ضمن نطاق محدد نحتاج إلى موقعك. يمكنك السماح بتحديد موقعك الحالي، أو اختيار نقطة على الخريطة، أو عرض جميع النتائج.</p><div class="row wrap" style="justify-content:center"><button class="btn btn-p btn-sm" data-act="loc-me">${ic('locate-fixed')}موقعي الحالي</button><button class="btn btn-n btn-sm" data-act="loc-pick">${ic('map')}اختيار من الخريطة</button><button class="btn btn-t btn-sm" data-act="r-all">عرض جميع النتائج</button></div></div>`;
+ROUTES.search = { fn: async (ctx, tok) => {
+  const qy = ctx.query; const f = S.page.f = { cat: qy.cat || '', q: qy.q || '', r: qy.r || (S.userLoc ? '10' : 'all'), view: 'list' }; let cache = { cat: null, list: null };
+  $('#view').innerHTML = `<div class="container page"><div class="pagehead"><div><h1>استكشف الحرفيين</h1><p class="muted">ابحث بالحرفة والمسافة، وقارن بين الحرفيين المتاحين.</p></div></div>
+  <div class="card" style="margin-bottom:18px"><form class="stack" style="gap:14px" data-form="search"><div class="filters" style="margin:0">${field('q', 'اسم الحرفي أو الخدمة', input('q', { v: f.q, ph: 'مثال: تسريب مياه' }))}${field('cat', 'نوع الحرفة', dd({ name: 'cat', options: catOpts(true), value: f.cat, search: true, placeholder: 'كل الحرف' }))}${field('r', 'نطاق البحث', dd({ name: 'r', options: RADII, value: f.r }))}<button class="btn btn-p" type="submit">${ic('search')}تطبيق البحث</button><button class="btn btn-n" type="button" data-act="s-clear">مسح الفلاتر</button></div>${locBarHtml()}</form></div>
+  <div class="row between wrap" style="margin-bottom:14px"><b id="rcount" class="muted">جارٍ البحث...</b><div class="seg" role="tablist"><button class="on" data-act="s-view" data-v="list">${ic('layout-grid')}قائمة</button><button data-act="s-view" data-v="map">${ic('map')}خريطة</button></div></div><div id="results">${skeletons(6, 190)}</div></div>`;
+  drawLocBar(); refreshIcons();
+  const run = async (reload) => {
+    const box = $('#results'); if (!box) return; const t2 = S.navTok;
+    if (f.r !== 'all' && !S.userLoc) { $('#rcount').textContent = ''; box.innerHTML = needLocBox(); refreshIcons(); return; }
+    try {
+      if (reload || cache.cat !== f.cat || !cache.list) { box.innerHTML = skeletons(6, 190); cache = { cat: f.cat, list: await fetchProviders(f.cat) }; if (t2 !== S.navTok) return; }
+      const items = filterProviders(cache.list, f); $('#rcount').textContent = `${items.length.toLocaleString('ar-EG')} نتيجة`;
+      if (!items.length) { box.innerHTML = emptyBox('search-x', 'لا توجد نتائج مطابقة', 'جرّب توسيع نطاق البحث أو تغيير نوع الحرفة.', `<button class="btn btn-o btn-sm" data-act="s-clear">مسح الفلاتر</button>`); refreshIcons(); return; }
+      if (f.view === 'map') { box.innerHTML = `<div class="mapbox tall" id="smap"></div>`; buildProvidersMap($('#smap'), items, f.r); } else box.innerHTML = `<div class="pgrid">${items.map(x => providerCard(x.p, x.dist)).join('')}</div>`;
+      refreshIcons();
+    } catch (e) { if (t2 === S.navTok) { box.innerHTML = errorBox(friendlyError(e)); refreshIcons(); } }
+  };
+  const sync = () => history.replaceState(null, '', '#/search' + qs({ q: f.q, cat: f.cat, r: f.r }));
+  S.page.rerun = () => { drawLocBar(); run(false); };
+  S.page.setRadius = r => { f.r = r; setDD('r', r); sync(); run(false); };
+  S.page.apply = () => { f.q = val('q'); f.cat = ddv('cat'); f.r = ddv('r') || 'all'; sync(); run(false); };
+  S.page.clear = () => { f.q = ''; f.cat = ''; f.r = S.userLoc ? '10' : 'all'; $('#q').value = ''; setDD('cat', ''); setDD('r', f.r); sync(); run(false); };
+  S.page.view = v => { f.view = v; $$('.seg button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); run(false); };
+  run(true);
+} };
+FORMS.search = () => S.page.apply?.(); ACT['s-clear'] = () => S.page.clear?.(); ACT['s-view'] = el => S.page.view?.(el.dataset.v);
+ROUTES.map = { fn: async (ctx, tok) => {
+  const f = S.page.f = { cat: ctx.query.cat || '', r: ctx.query.r || 'all' }; let list = null;
+  $('#view').innerHTML = `<div class="container page" style="padding-block:20px"><div class="row between wrap" style="margin-bottom:14px"><h1 style="font-size:1.5rem">الخريطة</h1><b class="muted" id="rcount"></b></div><div class="row wrap" style="margin-bottom:12px;align-items:flex-end"><div style="min-width:200px;flex:1;max-width:260px">${dd({ name: 'cat', options: catOpts(true), value: f.cat, search: true, placeholder: 'كل الحرف', small: true, onChange: v => { f.cat = v; load(true); } })}</div><div style="min-width:170px;flex:1;max-width:220px">${dd({ name: 'r', options: RADII, value: f.r, small: true, onChange: v => { f.r = v; load(false); } })}</div></div><div class="row wrap" style="margin-bottom:12px">${locBarHtml()}</div><div id="results"><div class="mapbox tall sk"></div></div></div>`;
+  drawLocBar();
+  const load = async (reload) => {
+    const box = $('#results'); const t2 = S.navTok; if (!box) return;
+    try {
+      if (reload || !list) { list = await fetchProviders(f.cat); if (t2 !== S.navTok) return; }
+      const useR = (f.r !== 'all' && !S.userLoc) ? 'all' : f.r; const items = filterProviders(list, { q: '', r: useR }).filter(x => x.p.latitude != null);
+      $('#rcount').textContent = `${items.length.toLocaleString('ar-EG')} حرفي على الخريطة`;
+      box.innerHTML = `${(f.r !== 'all' && !S.userLoc) ? `<div class="alert info" style="margin-bottom:10px">${ic('info')}<span>حدد موقعك لتطبيق نطاق المسافة. نعرض الآن جميع الحرفيين.</span></div>` : ''}<div class="mapbox tall" id="mmap"></div>${items.length ? '' : `<div style="margin-top:12px">${emptyBox('map-pin-off', 'لا يوجد حرفيون ضمن هذا الفلتر', 'غيّر الحرفة أو وسّع نطاق البحث.')}</div>`}`;
+      buildProvidersMap($('#mmap'), items, useR); refreshIcons();
+    } catch (e) { if (t2 === S.navTok) { box.innerHTML = errorBox(friendlyError(e)); refreshIcons(); } }
+  };
+  S.page.rerun = () => { drawLocBar(); load(false); }; load(true);
+} };
+
+/* ===================== 14. الملف الشخصي للحرفي ===================== */
+const priceLabel = s => s.priceType === 'quote' || s.price == null ? 'يُحدد السعر بعد المعاينة' : `${priceTypeLabel(s.priceType)} ${fmtPrice(s.price)}`;
+ROUTES.provider = { fn: async (ctx, tok) => {
+  const id = ctx.params[0]; $('#view').innerHTML = `<div class="container page">${skeletons(2, 220)}</div>`;
+  const [p, svcs, works, revs] = await Promise.all([dbGet('providers', id), dbList('services', where('providerId', '==', id), limit(60)).catch(() => []), dbList(['providers', id, 'works'], limit(12)).catch(() => []), dbList('reviews', where('providerId', '==', id), limit(40)).catch(() => [])]);
+  if (stale(tok)) return;
+  if (!p) { $('#view').innerHTML = `<div class="container page">${emptyBox('user-x', 'الملف غير موجود', 'قد يكون الحرفي حذف ملفه أو أن الرابط غير صحيح.', `<a class="btn btn-p btn-sm" href="#/search">العودة للبحث</a>`)}</div>`; refreshIcons(); return; }
+  const pub = svcs.filter(s => s.status === 'published'); revs.sort((a, b) => tsMs(b.createdAt) - tsMs(a.createdAt)); const c = catOf(p.mainCategoryId); const own = S.user?.id === id;
+  const canReq = !S.user || isCustomer(); const dist = (S.userLoc && p.latitude != null) ? haversine(S.userLoc.lat, S.userLoc.lng, p.latitude, p.longitude) : null;
+  document.title = `${p.name} | حرفة`;
+  $('#view').innerHTML = `<div class="container page">${backLink('/search', 'العودة للبحث')}
+  <div class="card"><div class="phead">${avatar(p.photoBase64, p.name, 104)}<div class="grow" style="min-width:220px"><h1 style="font-size:1.6rem">${esc(p.name)}</h1><div class="muted">${esc(p.shopName || '')}</div><div class="meta" style="margin-top:8px"><span>${ic(c?.icon || 'wrench')}${esc(c?.name || '')}</span><span>${ic('map-pin')}${esc([p.area, p.governorate].filter(Boolean).join('، '))}</span>${dist != null ? `<span>${ic('navigation')}${fmtDist(dist)}</span>` : ''}${p.experienceYears ? `<span>${ic('award')}خبرة ${p.experienceYears.toLocaleString('ar-EG')} سنة</span>` : ''}</div><div style="margin-top:8px">${ratingLine(p)}</div></div>
+   <div class="row wrap">${own ? `<a class="btn btn-o" href="#/provider-setup">${ic('pencil')}تعديل ملفي</a>` : `${favBtn('provider', id)}<a class="btn btn-n" href="#/chat/${id}">${ic('message-circle')}مراسلة الحرفي</a>${canReq ? `<a class="btn btn-p" href="#/request/${id}">${ic('clipboard-pen')}اطلب خدمة</a>` : ''}`}</div></div></div>
+  <div class="layout2" style="margin-top:20px"><div class="stack" style="gap:20px">
+   <div class="card"><h3>نبذة عن الحرفي</h3><p style="white-space:pre-wrap">${esc(p.description || 'لم يضف الحرفي نبذة بعد.')}</p>${(p.serviceAreas || []).length ? `<div style="margin-top:14px"><b class="sm">مناطق تقديم الخدمة</b><div class="chips" style="margin-top:6px">${p.serviceAreas.map(a => `<span class="badge info">${esc(a)}</span>`).join('')}</div></div>` : ''}</div>
+   <div class="card"><h3>الخدمات</h3>${pub.length ? pub.map(s => `<div class="svc"><div class="si">${s.imagesBase64?.[0] ? `<img src="${s.imagesBase64[0]}" alt="">` : ic(catOf(s.categoryId)?.icon || 'wrench')}</div><div class="grow"><a href="#/service/${s.id}" class="b">${esc(s.title)}</a><div class="sm muted" style="margin:2px 0 6px">${esc((s.description || '').slice(0, 130))}${(s.description || '').length > 130 ? '…' : ''}</div><span class="badge ok">${priceLabel(s)}</span></div><div class="row">${favBtn('service', s.id)}${(!own && canReq) ? `<a class="btn btn-o btn-sm" href="#/request/${id}?service=${s.id}">اطلب</a>` : ''}</div></div>`).join('') : `<p class="muted sm">لم ينشر الحرفي خدمات محددة بعد. يمكنك إرسال طلب وشرح ما تحتاجه.</p>`}</div>
+   <div class="card"><h3>صور الأعمال</h3>${works.length ? `<div class="gal">${works.map(w => `<button data-act="lb" data-src="${w.id}" aria-label="تكبير الصورة"><img src="${w.imageBase64}" alt="من أعمال ${esc(p.name)}"></button>`).join('')}</div>` : `<p class="muted sm">لا توجد صور أعمال مضافة.</p>`}</div>
+   <div class="card"><h3>تقييمات العملاء</h3>${revs.length ? `<div class="stack">${revs.map(r => `<div style="border-bottom:1px solid var(--bd);padding-bottom:12px"><div class="row between"><b>${esc(r.customerName || 'عميل')}</b><span class="xs muted">${fmtDay(r.createdAt)}</span></div>${stars(r.rating)}${r.comment ? `<p class="sm" style="margin-top:4px">${esc(r.comment)}</p>` : ''}</div>`).join('')}</div>` : `<p class="muted sm">لا توجد تقييمات بعد. تظهر التقييمات هنا بعد اكتمال الطلبات.</p>`}</div>
+  </div><div class="card" style="position:sticky;top:calc(var(--hh) + 16px)"><h3>الموقع</h3>${p.latitude != null ? `<div id="pmap" style="height:220px;border-radius:12px;border:1px solid var(--bd);position:relative;z-index:1"></div>` : `<p class="muted sm">لم يحدد الحرفي موقعه على الخريطة.</p>`}<p class="sm" style="margin-top:10px">${ic('map-pin')} ${esc(p.address || '')}</p></div></div></div>`;
+  S.page.workImgs = Object.fromEntries(works.map(w => [w.id, w.imageBase64]));
+  if (p.latitude != null) { const m = newMap($('#pmap'), [p.latitude, p.longitude], 15); L.marker([p.latitude, p.longitude]).addTo(m); m.scrollWheelZoom.disable(); }
+  refreshIcons();
+} };
+ACT.lb = el => lightbox(S.page.workImgs?.[el.dataset.src] || el.querySelector('img')?.src);
+/* ===================== 9. الطلبات والتفاوض ===================== */
+document.addEventListener('input', e => {
+  const t = e.target; if (!t.dataset) return;
+  if (t.dataset.draft && S.page.wiz) S.page.wiz.d[t.dataset.draft] = t.value;
+  if (t.dataset.keep && S.page.keep) S.page.keep[t.dataset.keep] = t.value;
+});
+const genOrderNo = () => { const d = new Date(); const p = n => String(n).padStart(2, '0'); return `HF-${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${Math.random().toString(36).slice(2, 6).toUpperCase()}${Date.now().toString(36).slice(-2).toUpperCase()}`; };
+const logEvent = (orderId, type, text) => dbAdd(['orders', orderId, 'events'], { type, text, actorId: S.user.id, actorName: S.user.name }).catch(e => console.warn(e));
+
+/* ----- معالج طلب الخدمة ----- */
+ROUTES.request = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  const pid = ctx.params[0]; $('#view').innerHTML = `<div class="container page" style="max-width:820px">${skeletons(1, 300)}</div>`;
+  const [p, svcs] = await Promise.all([dbGet('providers', pid), dbList('services', where('providerId', '==', pid), limit(60)).catch(() => [])]); if (stale(tok)) return;
+  if (!p) { $('#view').innerHTML = `<div class="container page">${emptyBox('user-x', 'الحرفي غير موجود', 'تعذر العثور على هذا الحرفي.', `<a class="btn btn-p btn-sm" href="#/search">العودة للبحث</a>`)}</div>`; refreshIcons(); return; }
+  const pub = svcs.filter(s => s.status === 'published'); const key = 'req_' + pid;
+  const d = S.drafts[key] = S.drafts[key] || { step: 1, serviceId: '', serviceTitle: '', title: '', desc: '', images: [], gov: S.user.governorate || '', area: S.user.area || '', addr: '', access: '', lat: S.userLoc?.lat ?? null, lng: S.userLoc?.lng ?? null, budget: '', contact: 'any', notes: '' };
+  if (ctx.query.service) { const s = pub.find(x => x.id === ctx.query.service); if (s && d.serviceId !== s.id) { d.serviceId = s.id; d.serviceTitle = s.title; if (!d.title) d.title = s.title; } }
+  S.page.wiz = { d, p, pub, key };
+  $('#view').innerHTML = `<div class="container page" style="max-width:820px">${backLink('/provider/' + pid, 'العودة لملف الحرفي')}<div class="pagehead"><div><h1>طلب خدمة</h1><p class="muted">من ${esc(p.name)}${p.shopName ? ' — ' + esc(p.shopName) : ''}</p></div></div><div class="steps-wiz" id="wsteps"></div><div id="wiz"></div></div>`;
+  drawWiz();
+} };
+const WSTEPS = ['تفاصيل الخدمة', 'الموقع', 'معلومات إضافية', 'المراجعة'];
+const CONTACT_OPTS = [{ value: 'any', label: 'في أي وقت' }, { value: 'morning', label: 'صباحًا (8 - 12)' }, { value: 'afternoon', label: 'بعد الظهر (12 - 5)' }, { value: 'evening', label: 'مساءً (5 - 10)' }];
+function drawWiz() {
+  const { d, p, pub } = S.page.wiz; $('#wsteps').innerHTML = WSTEPS.map((_, i) => `<div class="w ${i < d.step ? 'on' : ''}"></div>`).join(''); const box = $('#wiz'); let body = '';
+  const nav = (last) => `<div class="row between" style="margin-top:20px">${d.step > 1 ? `<button class="btn btn-n" type="button" data-act="wiz-prev">${ic('arrow-right')}السابق</button>` : '<span></span>'}${last ? `<button class="btn btn-p btn-lg" type="button" data-act="wiz-submit">${ic('send')}إرسال الطلب</button>` : `<button class="btn btn-p" type="button" data-act="wiz-next">التالي${ic('arrow-left')}</button>`}</div>`;
+  if (d.step === 1) {
+    const opts = [...pub.map(s => ({ value: s.id, label: s.title, desc: priceLabel(s) })), { value: 'other', label: 'خدمة أخرى / وصف مخصص' }];
+    body = `<div class="card"><h3>${WSTEPS[0]}</h3><div class="formgrid">${field('svc', 'الخدمة المطلوبة', dd({ name: 'svc', options: opts, value: d.serviceId || (d.svcOther ? 'other' : ''), placeholder: pub.length ? 'اختر من خدمات الحرفي' : 'لا توجد خدمات منشورة، اكتب طلبك بالأسفل', onChange: (v, o) => { d.serviceId = v === 'other' ? '' : v; d.serviceTitle = v === 'other' ? '' : o.label; d.svcOther = v === 'other'; if (!d.title && v !== 'other') { d.title = o.label; $('#title').value = o.label; } } }))}
+      ${field('provider', 'اسم الحرفي', input('provider', { v: p.name, attrs: 'disabled' }))}${field('title', 'عنوان مختصر للطلب', input('title', { v: d.title, ph: 'مثال: إصلاح تسريب في حوض المطبخ', attrs: 'data-draft="title" maxlength="90"' }), { req: true })}
+      ${field('desc', 'وصف تفصيلي لما تحتاجه', textarea('desc', { v: d.desc, ph: 'اشرح المشكلة أو العمل المطلوب، والمقاسات أو التفاصيل المهمة...', attrs: 'data-draft="desc" maxlength="1500"' }), { req: true })}
+      <div class="field"><span class="label">صور توضيحية (اختياري)</span><div id="f-imgs"></div><div class="hint">حتى 3 صور.</div></div></div></div>${nav()}`;
+  } else if (d.step === 2) {
+    body = `<div class="card"><h3>${WSTEPS[1]}</h3><div class="formgrid"><div class="grid2">${field('gov', 'المحافظة', dd({ name: 'gov', options: govOpts, value: d.gov, placeholder: 'اختر المحافظة', search: true, onChange: v => d.gov = v }), { req: true })}${field('area', 'المنطقة', input('area', { v: d.area, attrs: 'data-draft="area"' }), { req: true })}</div>${field('addr', 'العنوان', input('addr', { v: d.addr, ph: 'الشارع، رقم المبنى، الدور', attrs: 'data-draft="addr"' }), { req: true })}${field('access', 'ملاحظات الوصول (اختياري)', input('access', { v: d.access, ph: 'مثال: العمارة بجوار الصيدلية، الدور الثالث', attrs: 'data-draft="access"' }))}
+      <div class="field"><span class="label">الموقع على الخريطة (اختياري)</span><div id="pk"></div></div></div></div>${nav()}`;
+  } else if (d.step === 3) {
+    body = `<div class="card"><h3>${WSTEPS[2]}</h3><div class="formgrid">${field('budget', 'الميزانية التقريبية بالجنيه (اختياري)', input('budget', { type: 'number', v: d.budget, attrs: 'min="0" inputmode="numeric" data-draft="budget"' }), { hint: 'لا يلزمك تحديد ميزانية. السعر يُتفق عليه لاحقًا مع الحرفي.' })}${field('contact', 'الوقت المناسب للتواصل', dd({ name: 'contact', options: CONTACT_OPTS, value: d.contact, onChange: v => d.contact = v }))}${field('notes', 'ملاحظات إضافية (اختياري)', textarea('notes', { v: d.notes, attrs: 'data-draft="notes" maxlength="600"' }))}</div></div>${nav()}`;
+  } else {
+    const row = (k, v, s) => `<div class="kv"><span>${k}</span><span class="row" style="gap:8px">${v || '—'}<button class="btn btn-t btn-sm" type="button" data-act="wiz-goto" data-s="${s}" style="height:30px;padding:0 8px">تعديل</button></span></div>`;
+    body = `<div class="card"><h3>${WSTEPS[3]}</h3>${row('الحرفي', esc(p.name), 1)}${row('الخدمة', esc(d.serviceTitle || 'خدمة أخرى'), 1)}${row('عنوان الطلب', esc(d.title), 1)}<div class="kv"><span>الوصف</span><span style="max-width:70%;white-space:pre-wrap">${esc(d.desc)}</span></div>${d.images.length ? `<div class="gal" style="margin:10px 0">${d.images.map(i => `<div class="thumb" style="width:auto;height:auto;aspect-ratio:1"><img src="${i}" alt=""></div>`).join('')}</div>` : ''}${row('المكان', esc([d.addr, d.area, d.gov].filter(Boolean).join('، ')), 2)}${d.access ? row('ملاحظات الوصول', esc(d.access), 2) : ''}${row('الموقع على الخريطة', d.lat != null ? 'تم تحديده' : 'لم يُحدد', 2)}${row('الميزانية', d.budget ? fmtPrice(+d.budget) : 'غير محددة', 3)}${row('وقت التواصل', esc(CONTACT_OPTS.find(c => c.value === d.contact)?.label), 3)}${d.notes ? row('ملاحظات', esc(d.notes), 3) : ''}</div><div class="alert info" style="margin-top:14px">${ic('info')}<span>بعد الإرسال يراجع الحرفي طلبك ويقدّم سعرًا، ثم تتفاوضان عليه قبل تحديد الموعد.</span></div><div class="alert err hide" id="form-err" style="margin-top:14px"></div>${nav(true)}`;
+  }
+  box.innerHTML = body; refreshIcons();
+  if (d.step === 1) { const f = imgField('f-imgs', { max: 3, dim: 1000, maxChars: 140000, initial: d.images, label: 'إضافة صورة' }); f.onChange = () => d.images = f.data(); }
+  if (d.step === 2) mountPicker('pk', { lat: d.lat ?? undefined, lng: d.lng ?? undefined, height: 260, onChange: (a, b) => { d.lat = a; d.lng = b; } });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function validateStep(s) {
+  const { d } = S.page.wiz; clearErrs(); let bad = false; const E = (k, m) => { setErr(k, m); bad = true; };
+  d.title = val('title') || d.title; if (s === 1) { const t = val('title'), x = val('desc'); if (t.length < 4) E('title', 'اكتب عنوانًا مختصرًا للطلب'); if (x.length < 15) E('desc', 'اشرح ما تحتاجه بتفصيل أكثر (15 حرفًا على الأقل)'); }
+  if (s === 2) { if (!d.gov) E('gov', 'اختر المحافظة'); if (!val('area')) E('area', 'اكتب المنطقة'); if (val('addr').length < 5) E('addr', 'اكتب العنوان بالتفصيل'); }
+  if (s === 3 && d.budget && (isNaN(+d.budget) || +d.budget < 0)) E('budget', 'أدخل رقمًا صحيحًا'); if (bad) focusFirstErr(); return !bad;
+}
+ACT['wiz-next'] = () => { const { d } = S.page.wiz; if (!validateStep(d.step)) return; d.step++; drawWiz(); };
+ACT['wiz-prev'] = () => { const { d } = S.page.wiz; d.step = Math.max(1, d.step - 1); drawWiz(); };
+ACT['wiz-goto'] = el => { S.page.wiz.d.step = +el.dataset.s; drawWiz(); };
+ACT['wiz-submit'] = async el => {
+  const { d, p, key } = S.page.wiz; const u = S.user;
+  await withLoading(el, 'جارٍ إرسال الطلب', async () => {
+    try {
+      const imgChars = d.images.reduce((a, i) => a + i.length, 0); if (imgChars > 460000) throw new UserErr('حجم الصور المرفقة كبير. احذف صورة أو اختر صورًا أصغر.');
+      const orderNumber = genOrderNo();
+      const id = await dbAdd('orders', { orderNumber, customerId: u.id, customerName: u.name, providerId: p.id, providerName: p.name, serviceId: d.serviceId || '', serviceTitle: d.serviceTitle || '', title: d.title.trim(), description: d.desc.trim(), imagesBase64: d.images,
+        governorate: d.gov, area: d.area.trim(), address: d.addr.trim(), accessNotes: (d.access || '').trim(), latitude: d.lat ?? null, longitude: d.lng ?? null, budget: d.budget ? +d.budget : null, contactTime: d.contact, notes: (d.notes || '').trim(),
+        agreedPrice: null, agreedAt: null, scheduledAt: null, scheduleStatus: null, scheduleNote: '', status: 'pending_provider', paymentStatus: 'unpaid', updatedAt: serverTimestamp() });
+      await logEvent(id, 'created', 'أنشأ العميل الطلب وأرسله إلى الحرفي');
+      await notify(p.id, 'order_new', 'وصلك طلب جديد', `${u.name}: ${d.title.trim()}`, `/order/${id}`);
+      delete S.drafts[key]; showToast('تم إرسال طلبك للحرفي', 'ok'); navigateTo('/order/' + id);
+    } catch (e) { showFormErr(friendlyError(e)); showToast(friendlyError(e), 'err'); }
+  });
+};
+
+/* ----- صفحة تفاصيل الطلب ----- */
+const STEPS = ['إرسال الطلب', 'التفاوض على السعر', 'تحديد الموعد', 'الدفع', 'مراجعة الدفع', 'التنفيذ'];
+function stepIndex(o) { const d = dispStatus(o); return ({ pending_provider: 1, negotiating: 1, price_agreed: 2, awaiting_payment: 3, pending_payment_review: 4, payment_rejected: 4, payment_approved: 5, in_progress: 5, completed: 6 })[d] ?? 0; }
+ROUTES.order = { auth: true, fn: async (ctx, tok) => {
+  const id = ctx.params[0]; $('#view').innerHTML = `<div class="container page">${skeletons(2, 240)}</div>`;
+  const st = S.page.st = { order: undefined, offers: [], events: [], review: undefined, other: null }; S.page.keep = S.page.keep || { price: '', msg: '', rate: 0, comment: '' };
+  const fail = e => { if (!stale(tok)) { $('#view').innerHTML = `<div class="container page">${errorBox(friendlyError(e))}</div>`; refreshIcons(); } };
+  dbListenDoc(['orders', id], async o => {
+    if (stale(tok)) return; st.order = o;
+    if (!o || (o.customerId !== S.user.id && o.providerId !== S.user.id)) { $('#view').innerHTML = `<div class="container page">${emptyBox('file-x', 'الطلب غير متاح', 'هذا الطلب غير موجود أو لا يخصّ حسابك.', `<a class="btn btn-p btn-sm" href="#${homeFor()}">العودة للوحة</a>`)}</div>`; refreshIcons(); st.order = null; return; }
+    if (!st.other) { const oid = o.customerId === S.user.id ? o.providerId : o.customerId; st.other = await getUserLite(oid); }
+    if (o.status === 'completed' && st.review === undefined && o.customerId === S.user.id) { st.review = null; try { st.review = await dbGet('reviews', id); } catch {} }
+    if (!stale(tok)) drawOrder();
+  }, fail);
+  dbListenCol(['orders', id, 'offers'], [orderBy('createdAt', 'asc')], a => { st.offers = a; if (st.order) drawOrder(); }, fail);
+  dbListenCol(['orders', id, 'events'], [orderBy('createdAt', 'asc')], a => { st.events = a; if (st.order) drawOrder(); }, () => {});
+} };
+function offerHtml(x, o) {
+  const mine = x.senderId === S.user.id; const lab = { pending: ['بانتظار الرد', 'warn'], accepted: ['تم القبول', 'ok'], superseded: ['استُبدل بعرض جديد', 'mute'], rejected: ['مرفوض', 'err'] }[x.status] || ['', 'mute'];
+  return `<div class="offer ${mine ? 'mine' : ''} ${x.status === 'superseded' ? 'sup' : ''}"><div class="grow"><div class="row between wrap"><span class="p">${fmtPrice(x.price)}</span><span class="badge ${lab[1]}">${lab[0]}</span></div><div class="xs muted">${mine ? 'عرضك' : (x.senderId === o.customerId ? 'عرض العميل ' + esc(o.customerName) : 'عرض الحرفي ' + esc(o.providerName))} · ${fmtDate(x.createdAt)}</div>${x.message ? `<div class="sm" style="margin-top:4px">${esc(x.message)}</div>` : ''}</div></div>`;
+}
+function negotiationHtml(o, offers, isProv) {
+  const me = S.user.id; const live = ['pending_provider', 'negotiating'].includes(o.status); const last = offers[offers.length - 1]; const pend = last && last.status === 'pending' ? last : null; const keep = S.page.keep;
+  let head = pend ? `<div class="row between wrap"><div><div class="xs muted">آخر سعر مقترح</div><div style="font-size:1.8rem;font-weight:800;color:var(--gd)">${fmtPrice(pend.price)}</div></div><div class="sm muted" style="text-align:end">من ${pend.senderId === o.customerId ? 'العميل' : 'الحرفي'}<br>${fmtDate(pend.createdAt)}</div></div>` : (o.agreedPrice != null ? `<div class="alert ok">${ic('circle-check')}<span>تم الاتفاق على السعر: <b>${fmtPrice(o.agreedPrice)}</b>${o.agreedAt ? ' بتاريخ ' + fmtDate(o.agreedAt) : ''}</span></div>` : `<p class="muted sm">لا توجد عروض أسعار حتى الآن.</p>`);
+  const form = (label) => `<div class="stack" style="gap:10px;margin-top:14px"><div class="grid2">${field('offer-price', label, input('offer-price', { type: 'number', v: keep.price, ph: 'السعر بالجنيه', attrs: 'min="1" inputmode="numeric" data-keep="price"' }))}${field('offer-msg', 'رسالة مع العرض (اختياري)', input('offer-msg', { v: keep.msg, attrs: 'maxlength="300" data-keep="msg"' }))}</div><button class="btn btn-p" data-act="offer-send">${ic('send')}إرسال العرض</button></div>`;
+  let actions = '';
+  if (live) {
+    if (pend && pend.senderId !== me) actions = `<div class="row wrap" style="margin-top:14px"><button class="btn btn-p" data-act="offer-accept" data-oid="${pend.id}">${ic('check')}قبول السعر ${fmtPrice(pend.price)}</button></div>${form('أو اقترح سعرًا بديلًا')}`;
+    else if (pend) actions = `<div class="alert info" style="margin-top:14px">${ic('hourglass')}<span>عرضك بانتظار رد الطرف الآخر.</span></div>`;
+    else if (isProv) actions = form('اقترح سعرًا للخدمة');
+    else actions = `<div class="alert info" style="margin-top:14px">${ic('hourglass')}<span>بانتظار أن يراجع الحرفي طلبك ويقدم عرض سعر.</span></div>`;
+  }
+  return `<div class="card"><h3>التفاوض على السعر</h3>${o.budget ? `<p class="sm muted" style="margin-bottom:10px">ميزانية العميل التقريبية: <b>${fmtPrice(o.budget)}</b></p>` : ''}${head}${actions}${offers.length ? `<div class="stack" style="gap:8px;margin-top:16px"><b class="sm">سجل العروض</b>${[...offers].reverse().map(x => offerHtml(x, o)).join('')}</div>` : ''}</div>`;
+}
+function drawOrder() {
+  const st = S.page.st; const o = st.order; if (!o) return; const me = S.user.id; const isProv = o.providerId === me; const ds = dispStatus(o); const keep = S.page.keep; const v = $('#view'); if (!v) return;
+  const si = stepIndex(o); const dead = ['cancelled', 'rejected'].includes(ds); const other = st.other;
+  S.page.imgs = o.imagesBase64 || [];
+  let actionCard = '';
+  if (!isProv) {
+    if (o.status === 'price_agreed') actionCard = `<div class="card"><h3>الخطوة التالية: تحديد الموعد</h3><p class="muted sm" style="margin-bottom:12px">تم الاتفاق على السعر. اختر الموعد المناسب لتنفيذ الخدمة.</p><a class="btn btn-p" href="#/schedule/${o.id}">${ic('calendar-days')}تحديد الموعد</a></div>`;
+    else if (o.status === 'awaiting_payment' && o.paymentStatus !== 'payment_rejected') actionCard = `<div class="card"><h3>الخطوة التالية: الدفع</h3><p class="muted sm" style="margin-bottom:12px">حوّل المبلغ المتفق عليه إلى المحفظة وارفع صورة الإيصال.</p><div class="row wrap"><a class="btn btn-p" href="#/payment/${o.id}">${ic('credit-card')}الدفع ورفع الإيصال</a><a class="btn btn-n" href="#/schedule/${o.id}">تعديل الموعد</a></div></div>`;
+    else if (o.paymentStatus === 'payment_rejected' && !['completed', 'cancelled', 'rejected'].includes(o.status)) actionCard = `<div class="card"><div class="alert err" style="margin-bottom:12px">${ic('circle-alert')}<span>لم يتم قبول إيصال الدفع السابق. يمكنك رفع إيصال جديد.</span></div><a class="btn btn-p" href="#/payment/${o.id}">${ic('upload')}رفع إيصال جديد</a></div>`;
+    else if (ds === 'pending_payment_review') actionCard = `<div class="card"><div class="alert warn">${ic('hourglass')}<span>تم استلام إيصال الدفع وهو قيد المراجعة. لن يبدأ التنفيذ قبل اعتماد الدفع.</span></div></div>`;
+    else if (o.status === 'completed') {
+      actionCard = st.review ? `<div class="card"><h3>تقييمك</h3>${stars(st.review.rating)}${st.review.comment ? `<p class="sm" style="margin-top:6px">${esc(st.review.comment)}</p>` : ''}</div>` : `<div class="card"><h3>قيّم الحرفي</h3><div class="stack" style="gap:10px"><div class="starin" id="starin" role="radiogroup" aria-label="التقييم">${[1, 2, 3, 4, 5].map(i => `<button type="button" class="${i <= keep.rate ? 'on' : ''}" data-act="star" data-v="${i}" aria-label="${i} نجوم">${ic('star')}</button>`).join('')}</div><div class="sm muted" id="starprev">${keep.rate ? `تقييمك: ${keep.rate} من 5` : 'اختر عدد النجوم'}</div>${textarea('comment', { v: keep.comment, ph: 'اكتب تعليقك (اختياري)', attrs: 'data-keep="comment" maxlength="500"' })}<button class="btn btn-p" data-act="review-send">${ic('send')}إرسال التقييم</button></div></div>`;
+    }
+  } else {
+    if (ds === 'payment_approved') actionCard = `<div class="card"><h3>تم اعتماد الدفع</h3><p class="muted sm" style="margin-bottom:12px">يمكنك البدء بتنفيذ الخدمة في الموعد المتفق عليه.</p><button class="btn btn-p" data-act="order-start">${ic('play')}بدء التنفيذ</button></div>`;
+    else if (o.status === 'in_progress') actionCard = `<div class="card"><h3>الخدمة قيد التنفيذ</h3><p class="muted sm" style="margin-bottom:12px">عند انتهاء العمل اضغط لتأكيد الإنجاز ليتمكن العميل من تقييمك.</p><button class="btn btn-p" data-act="order-complete">${ic('check-check')}تم إنجاز الخدمة</button></div>`;
+    else if (ds === 'pending_payment_review') actionCard = `<div class="card"><div class="alert warn">${ic('hourglass')}<span>أرسل العميل إيصال الدفع وهو قيد المراجعة. سيُخطر عند اعتماده.</span></div></div>`;
+    if (o.scheduledAt && o.scheduleStatus === 'proposed' && !dead && o.status !== 'completed') actionCard += `<div class="card" style="margin-top:16px"><h3>موعد مقترح من العميل</h3><p class="b">${fmtDate(o.scheduledAt)}</p><p class="muted sm" style="margin:4px 0 12px">${esc(o.scheduleNote || '')}</p><button class="btn btn-o" data-act="sched-confirm">${ic('calendar-check')}تأكيد الموعد</button></div>`;
+  }
+  const canNeg = ['pending_provider', 'negotiating', 'price_agreed', 'awaiting_payment'].includes(o.status) && o.paymentStatus === 'unpaid';
+  const cancelBtn = canNeg ? (isProv ? `<button class="btn btn-do btn-sm" data-act="order-reject">${ic('x')}رفض الطلب</button>` : `<button class="btn btn-do btn-sm" data-act="order-cancel">${ic('x')}إلغاء الطلب</button>`) : '';
+  const kv = (k, val) => `<div class="kv"><span>${k}</span><span>${val}</span></div>`;
+  v.innerHTML = `<div class="container page">${backLink(isProv ? '/provider-orders' : '/orders', 'العودة للطلبات')}
+  <div class="pagehead"><div><div class="row wrap"><h1>طلب <span class="num">${esc(o.orderNumber)}</span></h1>${statusBadge(o)}</div><p class="muted">${esc(o.title)}</p></div>${cancelBtn}</div>
+  ${dead ? `<div class="alert err" style="margin-bottom:18px">${ic('circle-x')}<span>${ds === 'cancelled' ? 'تم إلغاء هذا الطلب.' : 'رفض الحرفي هذا الطلب.'}</span></div>` : `<div class="progress" role="list" aria-label="مراحل الطلب">${STEPS.map((s, i) => `<div class="pstep ${i < si ? 'done' : (i === si ? 'cur' : '')}" role="listitem"><div class="pc">${i < si ? ic('check') : i + 1}</div>${s}</div>`).join('')}</div>`}
+  <div class="layout2"><div class="stack" style="gap:18px">
+   <div class="card"><h3>تفاصيل الطلب</h3><p style="white-space:pre-wrap">${esc(o.description)}</p>${(o.imagesBase64 || []).length ? `<div class="gal" style="margin-top:12px">${o.imagesBase64.map((s, i) => `<button data-act="lbi" data-i="${i}" aria-label="تكبير"><img src="${s}" alt="صورة الطلب"></button>`).join('')}</div>` : ''}<div style="margin-top:12px">${kv('المكان', esc([o.address, o.area, o.governorate].filter(Boolean).join('، ')))}${o.accessNotes ? kv('ملاحظات الوصول', esc(o.accessNotes)) : ''}${o.notes ? kv('ملاحظات', esc(o.notes)) : ''}</div></div>
+   ${dead ? '' : negotiationHtml(o, st.offers, isProv)}${actionCard}</div>
+  <div class="stack" style="gap:18px"><div class="card"><h3>ملخص الطلب</h3>${kv(isProv ? 'العميل' : 'الحرفي', other ? (isProv ? esc(other.name) : `<a href="#/provider/${other.id}" style="color:var(--g)">${esc(other.name)}</a>`) : '…')}${kv('الخدمة', esc(o.serviceTitle || 'خدمة أخرى'))}${kv('السعر المتفق عليه', o.agreedPrice != null ? `<b>${fmtPrice(o.agreedPrice)}</b>` : 'لم يتحدد بعد')}${kv('الموعد', o.scheduledAt ? `${fmtDate(o.scheduledAt)}<br><span class="xs muted">${o.scheduleStatus === 'confirmed' ? 'مؤكد من الحرفي' : 'مقترح بانتظار التأكيد'}</span>` : 'لم يتحدد بعد')}${kv('حالة الدفع', ({ unpaid: 'لم يتم الدفع', pending_payment_review: 'قيد المراجعة', payment_approved: 'تم قبول الدفع', payment_rejected: 'تم رفض الإيصال' })[o.paymentStatus] || '—')}${kv('تاريخ الإنشاء', fmtDate(o.createdAt))}${other ? `<a class="btn btn-n btn-b" style="margin-top:12px" href="#/chat/${other.id}?order=${o.id}">${ic('message-circle')}مراسلة ${isProv ? 'العميل' : 'الحرفي'}</a>` : ''}</div>
+  <div class="card"><h3>سجل التحديثات</h3>${st.events.length ? `<div class="tl">${[...st.events].reverse().map(e => `<div class="ev">${esc(e.text)}<div class="xs muted">${fmtDate(e.createdAt)}</div></div>`).join('')}</div>` : '<p class="muted sm">لا توجد تحديثات.</p>'}</div></div></div></div>`;
+  const pe = $('#offer-price'); if (pe && keep.price) pe.value = keep.price;
+  refreshIcons();
+}
+ACT.lbi = el => lightbox(S.page.imgs[+el.dataset.i]);
+ACT.star = el => { const k = S.page.keep; k.rate = +el.dataset.v; $$('#starin button').forEach((b, i) => b.classList.toggle('on', i < k.rate)); $('#starprev').textContent = `تقييمك: ${k.rate} من 5`; };
+async function orderGuard(allowed, orderId = S.page.st.order.id) { const o = await dbGet('orders', orderId); if (!o || !allowed.includes(o.status)) throw new UserErr('تغيرت حالة الطلب ولم يعد هذا الإجراء متاحًا. حدّث الصفحة.'); return o; }
+const otherId = o => o.customerId === S.user.id ? o.providerId : o.customerId;
+ACT['offer-send'] = async el => {
+  const st = S.page.st; const o = st.order; clearErrs(); const price = Math.round(+toEn(val('offer-price'))); const msg = val('offer-msg');
+  if (!price || price < 1 || price > 1000000) { setErr('offer-price', 'أدخل سعرًا صحيحًا بين 1 و 1,000,000 جنيه'); return focusFirstErr(); }
+  await withLoading(el, 'جارٍ الإرسال', async () => {
+    try {
+      await orderGuard(['pending_provider', 'negotiating']); const last = st.offers[st.offers.length - 1]; if (last?.status === 'pending' && last.senderId === S.user.id) throw new UserErr('عرضك الأخير ما زال بانتظار رد الطرف الآخر.');
+      if (!last && o.customerId === S.user.id) throw new UserErr('بانتظار عرض السعر الأول من الحرفي.');
+      const b = writeBatch(db); st.offers.filter(x => x.status === 'pending').forEach(x => b.update(dref('orders', o.id, 'offers', x.id), { status: 'superseded' }));
+      b.set(doc(col('orders', o.id, 'offers')), { senderId: S.user.id, senderName: S.user.name, price, message: msg, status: 'pending', createdAt: serverTimestamp() }); b.update(dref('orders', o.id), { status: 'negotiating', updatedAt: serverTimestamp() }); await b.commit();
+      S.page.keep.price = ''; S.page.keep.msg = ''; await logEvent(o.id, 'offer', `${S.user.name} اقترح سعر ${fmtPrice(price)}`); await notify(otherId(o), 'offer', 'وصلك عرض سعر', `${S.user.name} اقترح ${fmtPrice(price)} للطلب ${o.orderNumber}`, `/order/${o.id}`); showToast('تم إرسال العرض', 'ok');
+    } catch (e) { showToast(friendlyError(e), 'err'); }
+  });
+};
+ACT['offer-accept'] = async el => {
+  const o = S.page.st.order, oid = el.dataset.oid; const x = S.page.st.offers.find(a => a.id === oid); if (!x) return;
+  const ok = await confirmBox('قبول السعر', `سيتم اعتماد السعر ${fmtPrice(x.price)} وإغلاق التفاوض. هل تريد المتابعة؟`, 'قبول السعر', false); if (!ok) return;
+  await withLoading(el, 'جارٍ القبول', async () => {
+    try {
+      await runTransaction(db, async tx => { const orf = dref('orders', o.id), ofr = dref('orders', o.id, 'offers', oid); const [os, fs] = await Promise.all([tx.get(orf), tx.get(ofr)]); const od = os.data(), f = fs.data();
+        if (!['pending_provider', 'negotiating'].includes(od.status)) throw new UserErr('لم يعد التفاوض متاحًا على هذا الطلب.'); if (f.status !== 'pending' || f.senderId === S.user.id) throw new UserErr('هذا العرض لم يعد متاحًا للقبول.');
+        tx.update(ofr, { status: 'accepted', respondedAt: serverTimestamp() }); tx.update(orf, { agreedPrice: f.price, agreedAt: serverTimestamp(), status: 'price_agreed', updatedAt: serverTimestamp() }); });
+      await logEvent(o.id, 'agreed', `تم الاتفاق على السعر ${fmtPrice(x.price)}`); await notify(otherId(o), 'price_agreed', 'تم الاتفاق على السعر', `تم الاتفاق على ${fmtPrice(x.price)} للطلب ${o.orderNumber}`, `/order/${o.id}`); showToast('تم الاتفاق على السعر', 'ok');
+    } catch (e) { showToast(friendlyError(e), 'err'); }
+  });
+};
+async function closeOrder(status, label, title, body, confirmText, noteTitle, noteBody, evText) {
+  const o = S.page.st.order; await confirmBox(title, body, confirmText, true, async () => { await orderGuard(['pending_provider', 'negotiating', 'price_agreed', 'awaiting_payment']); await dbUpdate(['orders', o.id], { status }); await logEvent(o.id, status, evText); await notify(otherId(o), status, noteTitle, noteBody + ' ' + o.orderNumber, `/order/${o.id}`); showToast(label, 'info'); });
+}
+ACT['order-cancel'] = () => closeOrder('cancelled', 'تم إلغاء الطلب', 'إلغاء الطلب', 'سيتم إلغاء الطلب وإنهاء التفاوض عليه. لا يمكن التراجع عن ذلك.', 'إلغاء الطلب', 'تم إلغاء طلب', 'ألغى العميل الطلب', 'ألغى العميل الطلب');
+ACT['order-reject'] = () => closeOrder('rejected', 'تم رفض الطلب', 'رفض الطلب', 'سيتم إبلاغ العميل برفض الطلب وإنهاء التفاوض.', 'رفض الطلب', 'تم رفض طلبك', 'اعتذر الحرفي عن تنفيذ الطلب', 'رفض الحرفي الطلب');
+ACT['sched-confirm'] = async el => { const o = S.page.st.order; await withLoading(el, 'جارٍ التأكيد', async () => { try { await dbUpdate(['orders', o.id], { scheduleStatus: 'confirmed' }); await logEvent(o.id, 'schedule', 'أكد الحرفي الموعد'); await notify(o.customerId, 'schedule', 'تم تأكيد الموعد', `أكد الحرفي موعد الطلب ${o.orderNumber}`, `/order/${o.id}`); showToast('تم تأكيد الموعد', 'ok'); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+ACT['order-start'] = async el => { const o = S.page.st.order; await withLoading(el, 'جارٍ التحديث', async () => { try { await orderGuard([o.status]); if (o.paymentStatus !== 'payment_approved') throw new UserErr('لا يمكن بدء التنفيذ قبل اعتماد الدفع.'); await dbUpdate(['orders', o.id], { status: 'in_progress' }); await logEvent(o.id, 'in_progress', 'بدأ الحرفي تنفيذ الخدمة'); await notify(o.customerId, 'in_progress', 'بدأ تنفيذ الخدمة', `بدأ الحرفي تنفيذ الطلب ${o.orderNumber}`, `/order/${o.id}`); showToast('تم تحديث الحالة', 'ok'); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+ACT['order-complete'] = async el => { const o = S.page.st.order; const ok = await confirmBox('تأكيد إنجاز الخدمة', 'هل انتهيت من تنفيذ الخدمة بالكامل؟', 'نعم، تم الإنجاز', false); if (!ok) return; await withLoading(el, 'جارٍ التحديث', async () => { try { await dbUpdate(['orders', o.id], { status: 'completed', completedAt: serverTimestamp() }); await logEvent(o.id, 'completed', 'اكتملت الخدمة'); await notify(o.customerId, 'completed', 'اكتملت الخدمة', `اكتمل الطلب ${o.orderNumber}. يمكنك الآن تقييم الحرفي`, `/order/${o.id}`); showToast('تم إنجاز الطلب', 'ok'); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+ACT['review-send'] = async el => {
+  const o = S.page.st.order; const k = S.page.keep; if (!k.rate) return showToast('اختر عدد النجوم أولًا', 'warn'); if (o.status !== 'completed') return;
+  await withLoading(el, 'جارٍ الإرسال', async () => {
+    try {
+      if (await dbGet('reviews', o.id)) throw new UserErr('سبق أن قيّمت هذا الطلب.');
+      await dbSet(['reviews', o.id], { orderId: o.id, customerId: o.customerId, customerName: S.user.name, providerId: o.providerId, rating: k.rate, comment: (k.comment || '').trim(), createdAt: serverTimestamp() });
+      const all = await dbList('reviews', where('providerId', '==', o.providerId), limit(500)); const avg = all.reduce((a, r) => a + r.rating, 0) / all.length;
+      await dbUpdate(['providers', o.providerId], { ratingAvg: +avg.toFixed(2), ratingCount: all.length });
+      await notify(o.providerId, 'review', 'تقييم جديد', `${S.user.name} قيّمك ${k.rate} من 5`, `/provider/${o.providerId}`);
+      S.page.st.review = { rating: k.rate, comment: k.comment }; k.rate = 0; k.comment = ''; drawOrder(); showToast('شكرًا لتقييمك', 'ok');
+    } catch (e) { showToast(friendlyError(e), 'err'); }
+  });
+};
+
+/* ----- تحديد الموعد ----- */
+async function loadMyOrder(id, tok, who) {
+  const o = await dbGet('orders', id); if (stale(tok)) return null;
+  if (!o || o[who] !== S.user.id) { $('#view').innerHTML = `<div class="container page">${emptyBox('file-x', 'الطلب غير متاح', 'هذا الطلب غير موجود أو لا يخصّ حسابك.', `<a class="btn btn-p btn-sm" href="#/orders">طلباتي</a>`)}</div>`; refreshIcons(); return null; } return o;
+}
+const summaryRows = (o, extra = '') => `<div class="kv"><span>رقم الطلب</span><span class="num">${esc(o.orderNumber)}</span></div><div class="kv"><span>الخدمة</span><span>${esc(o.serviceTitle || o.title)}</span></div><div class="kv"><span>الحرفي</span><span>${esc(o.providerName)}</span></div><div class="kv"><span>السعر المتفق عليه</span><span><b>${fmtPrice(o.agreedPrice)}</b></span></div>${extra}`;
+ROUTES.schedule = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  const o = await loadMyOrder(ctx.params[0], tok, 'customerId'); if (!o) return;
+  if (!['price_agreed', 'awaiting_payment'].includes(o.status) || o.agreedPrice == null || o.paymentStatus === 'pending_payment_review') { $('#view').innerHTML = `<div class="container page">${backLink('/order/' + o.id, 'العودة للطلب')}${emptyBox('calendar-x', 'لا يمكن تحديد الموعد الآن', 'يتاح تحديد الموعد بعد الاتفاق على السعر وقبل إرسال الدفع.', `<a class="btn btn-p btn-sm" href="#/order/${o.id}">عرض الطلب</a>`)}</div>`; refreshIcons(); return; }
+  const now = new Date(); const sc = S.page.sc = { y: now.getFullYear(), m: now.getMonth(), date: null, time: '', o };
+  $('#view').innerHTML = `<div class="container page" style="max-width:860px">${backLink('/order/' + o.id, 'العودة للطلب')}<div class="pagehead"><div><h1>تحديد موعد الخدمة</h1><p class="muted">اختر اليوم والوقت المناسبين. يُسجَّل الموعد كمقترح ويؤكده الحرفي.</p></div></div>
+  <div class="card"><div class="stack" style="gap:18px"><div class="field"><span class="label">اليوم</span><div id="cal"></div></div><div class="field"><span class="label">الوقت</span><div id="times"></div><div class="ferr" id="err-when"></div></div>${field('snote', 'ملاحظات إضافية (اختياري)', textarea('snote', { attrs: 'maxlength="300"', ph: 'مثال: يرجى الاتصال قبل الوصول بنصف ساعة' }))}
+  <div class="card flat"><h3>ملخص قبل التأكيد</h3>${summaryRows(o, `<div class="kv"><span>الموعد</span><span id="sum-when">لم يُحدد</span></div><div class="kv"><span>العنوان</span><span>${esc([o.address, o.area, o.governorate].join('، '))}</span></div>`)}</div>
+  <button class="btn btn-p btn-lg" data-act="sched-save">${ic('calendar-check')}تأكيد الموعد والانتقال للدفع</button></div></div></div>`;
+  drawCal();
+} };
+const TIMES = Array.from({ length: 15 }, (_, i) => `${String(8 + i).padStart(2, '0')}:00`);
+function drawCal() {
+  const sc = S.page.sc; const today = new Date(); today.setHours(0, 0, 0, 0); const first = new Date(sc.y, sc.m, 1); const days = new Date(sc.y, sc.m + 1, 0).getDate(); const off = (first.getDay() + 1) % 7; const canPrev = !(sc.y === today.getFullYear() && sc.m === today.getMonth());
+  const wd = ['س', 'ح', 'ن', 'ث', 'ر', 'خ', 'ج'];
+  $('#cal').innerHTML = `<div class="cal"><div class="hd"><button type="button" class="iconbtn" data-act="cal-nav" data-d="1" aria-label="الشهر التالي">${ic('chevron-right')}</button><span>${first.toLocaleDateString('ar-EG', { month: 'long', year: 'numeric' })}</span><button type="button" class="iconbtn" data-act="cal-nav" data-d="-1" ${canPrev ? '' : 'disabled'} aria-label="الشهر السابق">${ic('chevron-left')}</button></div><div class="gd">${wd.map(w => `<div class="wd">${w}</div>`).join('')}${Array(off).fill('<span></span>').join('')}${Array.from({ length: days }, (_, i) => { const d = new Date(sc.y, sc.m, i + 1); const past = d < today; const sel = sc.date && sc.date.getTime() === d.getTime(); return `<button type="button" class="dy ${sel ? 'on' : ''} ${d.getTime() === today.getTime() ? 'td' : ''}" data-act="cal-day" data-d="${i + 1}" ${past ? 'disabled' : ''}>${(i + 1).toLocaleString('ar-EG')}</button>`; }).join('')}</div></div>`;
+  const minT = Date.now() + 60 * 60 * 1000;
+  $('#times').innerHTML = sc.date ? `<div class="times">${TIMES.map(t => { const [h] = t.split(':'); const dt = new Date(sc.date); dt.setHours(+h, 0, 0, 0); const dis = dt.getTime() < minT; return `<button type="button" class="chip ${sc.time === t ? 'on' : ''}" data-act="cal-time" data-t="${t}" ${dis ? 'disabled' : ''}>${dt.toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' })}</button>`; }).join('')}</div>` : `<p class="hint">اختر اليوم أولًا لعرض الأوقات.</p>`;
+  const sw = $('#sum-when'); if (sw) sw.textContent = (sc.date && sc.time) ? schedDate().toLocaleString('ar-EG', { dateStyle: 'full', timeStyle: 'short' }) : 'لم يُحدد'; refreshIcons();
+}
+const schedDate = () => { const sc = S.page.sc; const d = new Date(sc.date); const [h, m] = sc.time.split(':'); d.setHours(+h, +m, 0, 0); return d; };
+ACT['cal-nav'] = el => { const sc = S.page.sc; sc.m += +el.dataset.d; if (sc.m > 11) { sc.m = 0; sc.y++; } if (sc.m < 0) { sc.m = 11; sc.y--; } drawCal(); };
+ACT['cal-day'] = el => { const sc = S.page.sc; sc.date = new Date(sc.y, sc.m, +el.dataset.d); sc.time = ''; drawCal(); };
+ACT['cal-time'] = el => { S.page.sc.time = el.dataset.t; drawCal(); };
+ACT['sched-save'] = async el => {
+  const sc = S.page.sc; clearErrs(); if (!sc.date || !sc.time) { setErr('when', 'اختر اليوم والوقت'); return showToast('اختر اليوم والوقت أولًا', 'warn'); }
+  const dt = schedDate(); if (dt.getTime() < Date.now() + 30 * 60 * 1000) { setErr('when', 'يجب أن يكون الموعد في المستقبل'); return; } const o = sc.o;
+  await withLoading(el, 'جارٍ الحفظ', async () => {
+    try {
+      await orderGuard(['price_agreed', 'awaiting_payment'], o.id); await dbUpdate(['orders', o.id], { scheduledAt: Timestamp.fromDate(dt), scheduleStatus: 'proposed', scheduleNote: val('snote'), status: 'awaiting_payment' });
+      await logEvent(o.id, 'schedule', `اقترح العميل موعدًا: ${dt.toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' })}`); await notify(o.providerId, 'schedule', 'تم اقتراح موعد', `اقترح العميل موعدًا للطلب ${o.orderNumber}`, `/order/${o.id}`);
+      showToast('تم حفظ الموعد المقترح', 'ok'); navigateTo('/payment/' + o.id);
+    } catch (e) { showToast(friendlyError(e), 'err'); }
+  });
+};
+
+/* ----- الدفع ----- */
+ROUTES.payment = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  const o = await loadMyOrder(ctx.params[0], tok, 'customerId'); if (!o) return;
+  const ok = (o.status === 'awaiting_payment' || o.paymentStatus === 'payment_rejected') && o.agreedPrice != null && o.scheduledAt && !['completed', 'cancelled', 'rejected'].includes(o.status);
+  if (!ok) { $('#view').innerHTML = `<div class="container page">${backLink('/order/' + o.id, 'العودة للطلب')}${emptyBox('credit-card', 'الدفع غير متاح الآن', o.paymentStatus === 'pending_payment_review' ? 'تم إرسال إيصالك وهو قيد المراجعة.' : 'يتاح الدفع بعد الاتفاق على السعر وتحديد الموعد.', `<a class="btn btn-p btn-sm" href="#/order/${o.id}">عرض الطلب</a>`)}</div>`; refreshIcons(); return; }
+  S.page.pay = { o };
+  $('#view').innerHTML = `<div class="container page" style="max-width:860px">${backLink('/order/' + o.id, 'العودة للطلب')}<div class="pagehead"><div><h1>الدفع ورفع الإيصال</h1><p class="muted">حوّل المبلغ المتفق عليه ثم ارفع صورة الإيصال لمراجعته.</p></div></div>
+  ${o.paymentStatus === 'payment_rejected' ? `<div class="alert err" style="margin-bottom:16px">${ic('circle-alert')}<span>لم يُقبل الإيصال السابق. ارفع إيصالًا واضحًا جديدًا.</span></div>` : ''}
+  <div class="stack" style="gap:18px"><div class="card"><h3>المبلغ المطلوب تحويله</h3><div style="font-size:2rem;font-weight:800;color:var(--gd)">${fmtPrice(o.agreedPrice)}</div><p class="sm muted">هذا هو السعر المتفق عليه ولا يتغير تلقائيًا.</p></div>
+  <div class="card"><h3>رقم المحفظة</h3><div class="wallet"><span class="w" id="wnum">${WALLET}</span><button class="btn btn-o btn-sm" data-act="copy-wallet">${ic('copy')}نسخ الرقم</button></div><ol class="sm" style="margin:14px 18px 0;display:grid;gap:4px"><li>حوّل المبلغ إلى الرقم أعلاه من محفظتك الإلكترونية.</li><li>التقط صورة واضحة لإيصال التحويل تُظهر المبلغ ورقم العملية.</li><li>ارفع الصورة هنا ثم اضغط «إرسال للمراجعة».</li></ol></div>
+  <div class="card"><h3>إيصال التحويل</h3><div id="f-rc"></div><div class="hint" style="margin-top:6px">صورة بصيغة JPG أو PNG. تُضغط تلقائيًا قبل الحفظ.</div></div>
+  <div class="card hide" id="pay-sum"><h3>ملخص قبل الإرسال</h3>${summaryRows(o, `<div class="kv"><span>الموعد</span><span>${fmtDate(o.scheduledAt)}</span></div><div class="kv"><span>رقم المحفظة</span><span class="num">${WALLET}</span></div>`)}<div id="rc-prev" style="margin-top:12px"></div><div class="alert warn" style="margin-top:12px">${ic('info')}<span>سيبقى الطلب «جارٍ مراجعة الطلب» حتى تتم مراجعة الإيصال، ورفعه لا يعني تأكيد الدفع.</span></div></div>
+  <div class="row" style="justify-content:flex-end"><button class="btn btn-p btn-lg hide" id="pay-go" data-act="pay-send">${ic('send')}إرسال للمراجعة</button></div></div></div>`;
+  const f = S.page.pay.f = imgField('f-rc', { max: 1, dim: 1400, maxChars: 380000, big: true, label: 'اضغط لاختيار صورة الإيصال' });
+  f.onChange = () => { const has = f.items.length > 0; $('#pay-sum').classList.toggle('hide', !has); $('#pay-go').classList.toggle('hide', !has); $('#rc-prev').innerHTML = has ? `<img src="${f.items[0].data}" alt="الإيصال" style="max-height:220px;border-radius:10px;border:1px solid var(--bd)">` : ''; };
+  refreshIcons();
+} };
+ACT['copy-wallet'] = async () => { try { await copyText(WALLET); showToast('تم نسخ رقم المحفظة', 'ok'); } catch { showToast('تعذر النسخ تلقائيًا. انسخ الرقم يدويًا.', 'warn'); } };
+ACT['pay-send'] = async el => {
+  const { o, f } = S.page.pay; if (!f.items.length) return showToast('ارفع صورة الإيصال أولًا', 'warn');
+  await withLoading(el, 'جارٍ الإرسال', async () => {
+    try {
+      const cur = await dbGet('orders', o.id); if (!cur || !(cur.status === 'awaiting_payment' || cur.paymentStatus === 'payment_rejected')) throw new UserErr('لم يعد الدفع متاحًا لهذا الطلب.');
+      const b = writeBatch(db); b.set(doc(col('orders', o.id, 'paymentReceipts')), { customerId: S.user.id, imageBase64: f.items[0].data, amount: o.agreedPrice, status: 'pending_payment_review', submittedAt: serverTimestamp(), reviewedAt: null });
+      b.update(dref('orders', o.id), { status: 'pending_payment_review', paymentStatus: 'pending_payment_review', updatedAt: serverTimestamp() }); await b.commit();
+      await logEvent(o.id, 'payment', 'أرسل العميل إيصال الدفع للمراجعة'); await notify(o.providerId, 'payment', 'إيصال دفع قيد المراجعة', `أرسل العميل إيصال الطلب ${o.orderNumber}`, `/order/${o.id}`);
+      navigateTo('/payment-done/' + o.id);
+    } catch (e) { showToast(friendlyError(e), 'err'); }
+  });
+};
+ROUTES['payment-done'] = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  const o = await loadMyOrder(ctx.params[0], tok, 'customerId'); if (!o) return;
+  $('#view').innerHTML = `<div class="container page" style="max-width:640px"><div class="card" style="text-align:center;padding:36px 24px"><div class="modal success" style="all:unset"><div class="mi" style="width:84px;height:84px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;margin:0 auto 16px">${ic('check')}</div></div><h1 style="font-size:1.6rem">تم استلام إيصالك</h1><p class="muted" style="margin:8px auto 18px;max-width:440px">طلبك الآن <b>«جارٍ مراجعة الطلب»</b>. لم يتم التحقق من الدفع بعد، وسنخطرك فور مراجعة الإيصال.</p><div style="text-align:start;margin-bottom:20px">${summaryRows(o, `<div class="kv"><span>الموعد</span><span>${fmtDate(o.scheduledAt)}</span></div>`)}</div><div class="row wrap" style="justify-content:center"><a class="btn btn-p" href="#/order/${o.id}">متابعة الطلب</a><a class="btn btn-n" href="#/orders">طلباتي</a></div></div></div>`; refreshIcons();
+} };
+/* ===================== 20-21. قوائم الطلبات واللوحات ===================== */
+const byNew = (a, b) => tsMs(b.updatedAt || b.createdAt) - tsMs(a.updatedAt || a.createdAt);
+function orderCard(o, role) {
+  const who = role === 'customer' ? o.providerName : o.customerName;
+  return `<a class="ocard" href="#/order/${o.id}"><div class="row between wrap"><b class="num sm">${esc(o.orderNumber)}</b>${statusBadge(o)}</div><div class="b">${esc(o.title)}</div><div class="meta"><span>${ic('user')}${esc(who || '')}</span><span>${ic('calendar')}${fmtDay(o.createdAt)}</span>${o.agreedPrice != null ? `<span>${ic('banknote')}${fmtPrice(o.agreedPrice)}</span>` : ''}</div><span class="btn btn-n btn-sm" style="align-self:flex-start">عرض التفاصيل</span></a>`;
+}
+function ordersPage(role) {
+  return async (ctx, tok) => {
+    const groups = role === 'customer' ? CUST_GROUPS : PROV_GROUPS; const f = S.page.f = { g: ctx.query.g || 'all' };
+    $('#view').innerHTML = `<div class="container page"><div class="pagehead"><div><h1>${role === 'customer' ? 'طلباتي' : 'طلبات العملاء'}</h1><p class="muted">تابع حالة كل طلب من مكان واحد.</p></div>${role === 'customer' ? `<a class="btn btn-p" href="#/search">${ic('search')}اطلب خدمة جديدة</a>` : ''}</div><div class="chiprow" id="chips"></div><div id="olist" style="margin-top:16px">${skeletons(3, 150)}</div></div>`;
+    const draw = () => {
+      const all = S.page.orders || []; $('#chips').innerHTML = groups.map(([k, l]) => { const c = all.filter(o => groupMatch(o, k)).length; return `<button class="chip ${f.g === k ? 'on' : ''}" data-act="ofilter" data-g="${k}">${l}<span class="c">${c.toLocaleString('ar-EG')}</span></button>`; }).join('');
+      const list = all.filter(o => groupMatch(o, f.g)); $('#olist').innerHTML = list.length ? `<div class="olist">${list.map(o => orderCard(o, role)).join('')}</div>` : (all.length ? emptyBox('filter-x', 'لا توجد طلبات في هذه الحالة', 'اختر حالة أخرى من الشرائح بالأعلى.') : (role === 'customer' ? emptyBox('clipboard-list', 'لا توجد طلبات بعد', 'ابحث عن حرفي مناسب وأرسل أول طلب خدمة.', `<a class="btn btn-p btn-sm" href="#/search">ابحث عن خدمة</a>`) : emptyBox('inbox', 'لا توجد طلبات بعد', 'ستظهر هنا الطلبات التي يرسلها إليك العملاء.', `<a class="btn btn-o btn-sm" href="#/services">أضف خدمة</a>`))); refreshIcons();
+    };
+    S.page.drawOrders = draw;
+    dbListenCol('orders', [where(role === 'customer' ? 'customerId' : 'providerId', '==', S.user.id), limit(150)], a => { S.page.orders = a.sort(byNew); draw(); }, e => { $('#olist').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+  };
+}
+ACT.ofilter = el => { S.page.f.g = el.dataset.g; history.replaceState(null, '', `${location.hash.split('?')[0]}?g=${el.dataset.g}`); S.page.drawOrders(); };
+ROUTES.orders = { auth: true, role: 'customer', fn: ordersPage('customer') };
+ROUTES['provider-orders'] = { auth: true, role: 'provider', fn: ordersPage('provider') };
+function notifPreview(a) { return a.length ? `<div class="list">${a.map(notifRow).join('')}</div>` : `<p class="muted sm">لا توجد إشعارات.</p>`; }
+const NICON = { order_new: 'inbox', offer: 'banknote', price_agreed: 'handshake', schedule: 'calendar-check', payment: 'credit-card', completed: 'check-check', in_progress: 'play', review: 'star', message: 'message-circle', cancelled: 'x', rejected: 'x' };
+const notifRow = n => `<a class="nrow ${n.isRead ? '' : 'un'}" href="#${n.targetPath || '/notifications'}" data-act="nread" data-id="${n.id}"><span class="nic">${ic(NICON[n.type] || 'bell')}</span><div class="grow"><div class="b sm">${esc(n.title)}</div><div class="sm muted">${esc(n.body)}</div><div class="xs muted">${fmtDate(n.createdAt)}</div></div></a>`;
+ACT.nread = el => { const id = el.dataset.id; dbUpdate(['notifications', id], { isRead: true }).catch(() => {}); };
+ROUTES.dashboard = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  const u = S.user;
+  $('#view').innerHTML = `<div class="container page"><div class="pagehead"><div><h1>أهلًا ${esc(u.name.split(' ')[0])}</h1><p class="muted">ماذا تحتاج اليوم؟</p></div><a class="btn btn-o" href="#/profile">${ic('user-cog')}تعديل الملف الشخصي</a></div>
+  <form class="searchbox" data-form="hero-search" style="margin-bottom:22px"><input class="input" id="hq" placeholder="ابحث عن حرفة أو خدمة" aria-label="بحث">${dd({ name: 'hr', options: RADII, value: S.userLoc ? '10' : 'all' })}<button class="btn btn-p" type="submit">${ic('search')}ابحث</button></form>
+  <div class="row wrap" style="margin-bottom:14px"><b>الحرف</b></div><div class="chiprow" style="margin-bottom:22px">${CATS.map(c => `<a class="chip" href="#/search?cat=${c.id}">${ic(c.icon)}${c.name}</a>`).join('')}<a class="chip" href="#/map">${ic('map')}فتح الخريطة</a></div>
+  <div class="stats" id="stats">${[1, 2, 3].map(() => '<div class="sk" style="height:76px;min-height:0"></div>').join('')}</div>
+  <div class="layout2" style="margin-top:22px"><div class="stack" style="gap:22px"><div><div class="row between" style="margin-bottom:10px"><h3>أحدث الطلبات</h3><a class="btn btn-t btn-sm" href="#/orders">كل الطلبات</a></div><div id="recent">${skeletons(2, 120)}</div></div><div><h3 style="margin-bottom:10px">الطلبات السابقة</h3><div id="past"></div></div></div>
+  <div class="stack" style="gap:22px"><div><div class="row between" style="margin-bottom:10px"><h3>الإشعارات</h3><a class="btn btn-t btn-sm" href="#/notifications">عرض الكل</a></div><div id="np"><div class="sk" style="height:100px"></div></div></div><a class="card row" href="#/favorites">${ic('heart')}<b class="grow">المفضلة</b>${ic('chevron-left')}</a></div></div></div>`;
+  refreshIcons();
+  dbListenCol('orders', [where('customerId', '==', u.id), limit(100)], a => {
+    a.sort(byNew); const act = a.filter(o => !['completed', 'cancelled', 'rejected'].includes(o.status)); const past = a.filter(o => ['completed', 'cancelled', 'rejected'].includes(o.status));
+    $('#stats').innerHTML = [['clipboard-list', 'الطلبات النشطة', act.length], ['hourglass', 'بانتظار مراجعة الدفع', a.filter(o => groupMatch(o, 'review')).length], ['check-check', 'مكتملة', a.filter(o => o.status === 'completed').length]].map(s => `<div class="stat"><span class="si">${ic(s[0])}</span><div><div class="sv">${s[2].toLocaleString('ar-EG')}</div><div class="sm muted">${s[1]}</div></div></div>`).join('');
+    $('#recent').innerHTML = act.length ? `<div class="stack" style="gap:10px">${act.slice(0, 4).map(o => orderCard(o, 'customer')).join('')}</div>` : emptyBox('clipboard-list', 'لا توجد طلبات نشطة', 'ابدأ بالبحث عن حرفي مناسب.', `<a class="btn btn-p btn-sm" href="#/search">ابحث عن خدمة</a>`);
+    $('#past').innerHTML = past.length ? `<div class="stack" style="gap:10px">${past.slice(0, 4).map(o => orderCard(o, 'customer')).join('')}</div>` : `<p class="muted sm">ستظهر هنا طلباتك المكتملة والملغاة.</p>`; refreshIcons();
+  }, e => { $('#recent').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+  dbListenCol('notifications', [where('userId', '==', u.id), limit(30)], a => { a.sort((x, y) => tsMs(y.createdAt) - tsMs(x.createdAt)); $('#np').innerHTML = notifPreview(a.slice(0, 4)); refreshIcons(); }, () => { $('#np').innerHTML = '<p class="muted sm">تعذر تحميل الإشعارات.</p>'; });
+} };
+ROUTES['provider-dashboard'] = { auth: true, role: 'provider', fn: async (ctx, tok) => {
+  const u = S.user, p = S.provider;
+  $('#view').innerHTML = `<div class="container page"><div class="pagehead"><div class="row">${avatar(p.photoBase64, p.name, 60)}<div><h1>أهلًا ${esc(u.name.split(' ')[0])}</h1><p class="muted">${esc(p.shopName)}</p></div></div><div class="row wrap"><a class="btn btn-n" href="#/provider/${u.id}">${ic('eye')}ملفي العام</a><a class="btn btn-o" href="#/services">${ic('briefcase')}خدماتي</a></div></div>
+  <div class="stats" id="stats">${[1, 2, 3, 4].map(() => '<div class="sk" style="height:76px;min-height:0"></div>').join('')}</div>
+  <div class="layout2" style="margin-top:22px"><div><div class="row between" style="margin-bottom:10px"><h3>طلبات تحتاج إلى متابعة</h3><a class="btn btn-t btn-sm" href="#/provider-orders">كل الطلبات</a></div><div id="recent">${skeletons(2, 120)}</div></div>
+  <div class="stack" style="gap:22px"><div><div class="row between" style="margin-bottom:10px"><h3>الإشعارات</h3><a class="btn btn-t btn-sm" href="#/notifications">عرض الكل</a></div><div id="np"><div class="sk" style="height:100px"></div></div></div><a class="card row" href="#/messages">${ic('message-circle')}<b class="grow">المحادثات</b>${ic('chevron-left')}</a><div class="card"><div class="row between"><b>الخدمات المنشورة</b><b id="svcn">…</b></div></div></div></div></div>`;
+  dbListenCol('orders', [where('providerId', '==', u.id), limit(150)], a => {
+    a.sort(byNew); const c = g => a.filter(o => groupMatch(o, g)).length;
+    $('#stats').innerHTML = [['inbox', 'تحتاج إلى رد', c('pending_provider'), 'pending_provider'], ['banknote', 'قيد التفاوض', c('negotiating'), 'negotiating'], ['handshake', 'تم الاتفاق', c('agreed'), 'agreed'], ['hourglass', 'بانتظار مراجعة الدفع', c('review'), 'review'], ['play', 'جارية', c('accepted') + c('in_progress'), 'in_progress'], ['check-check', 'مكتملة', c('completed'), 'completed']].map(s => `<a class="stat" href="#/provider-orders?g=${s[3]}"><span class="si">${ic(s[0])}</span><div><div class="sv">${s[2].toLocaleString('ar-EG')}</div><div class="sm muted">${s[1]}</div></div></a>`).join('');
+    const need = a.filter(o => ['pending_provider', 'negotiating'].includes(o.status) || dispStatus(o) === 'payment_approved' || (o.scheduleStatus === 'proposed' && !['completed', 'cancelled', 'rejected'].includes(o.status)));
+    $('#recent').innerHTML = need.length ? `<div class="stack" style="gap:10px">${need.slice(0, 6).map(o => orderCard(o, 'provider')).join('')}</div>` : emptyBox('inbox', 'لا توجد طلبات تحتاج إجراءً', 'ستظهر هنا الطلبات الجديدة وعروض الأسعار الواردة.'); refreshIcons();
+  }, e => { $('#recent').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+  dbListenCol('notifications', [where('userId', '==', u.id), limit(30)], a => { a.sort((x, y) => tsMs(y.createdAt) - tsMs(x.createdAt)); $('#np').innerHTML = notifPreview(a.slice(0, 4)); refreshIcons(); }, () => {});
+  dbListenCol('services', [where('providerId', '==', u.id), limit(100)], a => { const e = $('#svcn'); if (e) e.textContent = a.filter(s => s.status === 'published').length.toLocaleString('ar-EG'); }, () => {});
+} };
+
+/* ===================== 22. المحادثات ===================== */
+const convId = (a, b) => [a, b].sort().join('_');
+ROUTES.messages = { auth: true, fn: async (ctx, tok) => {
+  $('#view').innerHTML = `<div class="container page" style="max-width:800px"><div class="pagehead"><h1>المحادثات</h1></div><div id="clist"><div class="sk" style="height:200px"></div></div></div>`;
+  dbListenCol('conversations', [where('participantIds', 'array-contains', S.user.id), limit(50)], async a => {
+    a.sort((x, y) => tsMs(y.lastMessageAt) - tsMs(x.lastMessageAt)); const others = await Promise.all(a.map(c => getUserLite(c.participantIds.find(i => i !== S.user.id)))); if (stale(tok)) return;
+    $('#clist').innerHTML = a.length ? `<div class="list">${a.map((c, i) => { const o = others[i], un = c.unread?.[S.user.id] || 0; return `<a class="convrow" href="#/chat/${o.id}">${avatar(o.photoBase64, o.name, 48)}<div class="grow"><div class="row between"><b>${esc(o.name)}</b><span class="xs muted">${c.lastMessageAt ? fmtDate(c.lastMessageAt) : ''}</span></div><div class="sm muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46ch">${esc(c.lastMessage || '')}</div></div>${un ? `<span class="unread">${un}</span>` : ''}</a>`; }).join('')}</div>` : emptyBox('message-circle', 'لا توجد محادثات', isProvider() ? 'ستظهر هنا محادثات العملاء.' : 'ابدأ محادثة من الملف الشخصي لأي حرفي.', isProvider() ? '' : `<a class="btn btn-p btn-sm" href="#/search">استكشف الحرفيين</a>`); refreshIcons();
+  }, e => { $('#clist').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+} };
+ROUTES.chat = { auth: true, fn: async (ctx, tok) => {
+  const oid = ctx.params[0], me = S.user.id; if (oid === me) { navigateTo('/messages'); return; }
+  const other = await getUserLite(oid); if (stale(tok)) return; const cid = convId(me, oid); let order = null;
+  if (ctx.query.order) { try { const o = await dbGet('orders', ctx.query.order); if (o && (o.customerId === me || o.providerId === me)) order = o; } catch {} }
+  S.page.chat = { cid, oid, orderId: order?.id || null, convExists: false };
+  $('#view').innerHTML = `<div class="container page" style="max-width:800px;padding-block:16px"><div class="chatbox"><div class="chathd"><a class="iconbtn" href="#/messages" aria-label="رجوع">${ic('arrow-right')}</a>${avatar(other.photoBase64, other.name, 42)}<div class="grow"><b>${esc(other.name)}</b>${order ? `<div class="xs muted">بخصوص الطلب <a href="#/order/${order.id}" class="num" style="color:var(--g)">${esc(order.orderNumber)}</a> — ${esc(order.title)}</div>` : ''}</div></div><div class="msgs" id="msgs"><div class="sk" style="height:80px"></div></div><form class="chatin" data-form="chat"><input class="input" id="mtext" placeholder="اكتب رسالتك..." autocomplete="off" maxlength="1000"><button class="btn btn-p" type="submit" aria-label="إرسال">${ic('send')}</button></form></div></div>`; refreshIcons();
+  dbListenDoc(['conversations', cid], c => { S.page.chat.convExists = !!c; if (c && (c.unread?.[me] || 0) > 0) updateDoc(dref('conversations', cid), { [`unread.${me}`]: 0 }).catch(() => {}); }, () => {});
+  dbListenCol(['conversations', cid, 'messages'], [orderBy('createdAt', 'desc'), limit(100)], a => {
+    const list = a.slice().reverse(); const box = $('#msgs'); if (!box) return; const near = box.scrollHeight - box.scrollTop - box.clientHeight < 120 || !box.dataset.init; box.dataset.init = 1;
+    box.innerHTML = list.length ? list.map(m => `<div class="msg ${m.senderId === me ? 'mine' : ''}">${esc(m.text)}<span class="tm">${new Date(tsMs(m.createdAt)).toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' })}</span></div>`).join('') : `<div class="empty" style="margin:auto;border:0;background:none">${ic('message-circle')}<p>ابدأ المحادثة مع ${esc(other.name)}.</p></div>`;
+    if (near) box.scrollTop = box.scrollHeight; refreshIcons();
+    const unread = list.filter(m => m.senderId !== me && !m.readAt && m.createdAt?.toMillis).slice(-30);
+    if (unread.length) { const b = writeBatch(db); unread.forEach(m => b.update(dref('conversations', cid, 'messages', m.id), { readAt: serverTimestamp() })); b.commit().catch(() => {}); }
+  }, e => { $('#msgs').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+} };
+FORMS.chat = async form => {
+  const btn = form.querySelector('[type=submit]'); const inp = $('#mtext'); const text = inp.value.trim(); if (!text) return; const { cid, oid, orderId } = S.page.chat; const me = S.user.id;
+  await withLoading(btn, '', async () => {
+    try {
+      const b = writeBatch(db); b.set(doc(col('conversations', cid, 'messages')), { senderId: me, text, createdAt: serverTimestamp(), readAt: null });
+      const cdata = { participantIds: [me, oid], lastMessage: text.slice(0, 120), lastMessageAt: serverTimestamp(), lastSenderId: me, unread: { [oid]: increment(1), [me]: 0 } }; if (orderId) cdata.orderId = orderId; if (!S.page.chat.convExists) cdata.createdAt = serverTimestamp();
+      b.set(dref('conversations', cid), cdata, { merge: true }); await b.commit(); inp.value = ''; inp.focus();
+      notify(oid, 'message', 'رسالة جديدة', `${S.user.name}: ${text.slice(0, 80)}`, `/chat/${me}`);
+    } catch (e) { showToast('تعذر إرسال الرسالة. نصك ما زال محفوظًا في الحقل. ' + friendlyError(e), 'err'); }
+  });
+};
+
+/* ===================== 23. الخدمات ===================== */
+async function syncProviderServices(uid) { try { const a = await dbList('services', where('providerId', '==', uid), limit(100)); const t = a.filter(s => s.status === 'published').map(s => s.title).slice(0, 30); await dbUpdate(['providers', uid], { serviceTitles: t }); if (S.provider) S.provider.serviceTitles = t; } catch (e) { console.warn(e); } }
+ROUTES.services = { auth: true, role: 'provider', fn: async (ctx, tok) => {
+  $('#view').innerHTML = `<div class="container page"><div class="pagehead"><div><h1>خدماتي</h1><p class="muted">أضف الخدمات التي تقدمها وأدرها.</p></div><a class="btn btn-p" href="#/service-edit">${ic('plus')}إضافة خدمة</a></div><div id="slist">${skeletons(2, 130)}</div></div>`;
+  dbListenCol('services', [where('providerId', '==', S.user.id), limit(100)], a => {
+    a.sort((x, y) => tsMs(y.createdAt) - tsMs(x.createdAt)); S.page.svcs = a;
+    $('#slist').innerHTML = a.length ? `<div class="list" style="padding:0 18px">${a.map(s => `<div class="svc"><div class="si">${s.imagesBase64?.[0] ? `<img src="${s.imagesBase64[0]}" alt="">` : ic(catOf(s.categoryId)?.icon || 'wrench')}</div><div class="grow"><div class="row wrap"><b>${esc(s.title)}</b><span class="badge ${s.status === 'published' ? 'ok' : 'mute'}">${s.status === 'published' ? 'منشورة' : 'غير منشورة'}</span></div><div class="sm muted">${esc(catOf(s.categoryId)?.name || '')} · ${priceLabel(s)}</div><div class="row wrap" style="margin-top:8px"><a class="btn btn-n btn-sm" href="#/service/${s.id}">${ic('eye')}معاينة</a><a class="btn btn-n btn-sm" href="#/service-edit/${s.id}">${ic('pencil')}تعديل</a><button class="btn btn-n btn-sm" data-act="svc-toggle" data-id="${s.id}">${s.status === 'published' ? 'إيقاف النشر' : 'نشر'}</button><button class="btn btn-do btn-sm" data-act="svc-del" data-id="${s.id}">${ic('trash-2')}حذف</button></div></div></div>`).join('')}</div>` : emptyBox('briefcase', 'لم تضف خدمات بعد', 'أضف خدمة بسعرها ووصفها لتظهر في ملفك للعملاء.', `<a class="btn btn-p btn-sm" href="#/service-edit">إضافة أول خدمة</a>`); refreshIcons();
+  }, e => { $('#slist').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+} };
+ACT['svc-toggle'] = async el => { const s = S.page.svcs.find(x => x.id === el.dataset.id); await withLoading(el, 'جارٍ التحديث', async () => { try { await dbUpdate(['services', s.id], { status: s.status === 'published' ? 'draft' : 'published' }); await syncProviderServices(S.user.id); showToast(s.status === 'published' ? 'تم إيقاف النشر' : 'تم نشر الخدمة', 'ok'); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+ACT['svc-del'] = el => { const id = el.dataset.id; confirmBox('حذف الخدمة', 'سيتم حذف هذه الخدمة نهائيًا ولا يمكن التراجع.', 'حذف الخدمة', true, async () => { await dbDelete('services', id); await syncProviderServices(S.user.id); showToast('تم حذف الخدمة', 'ok'); }); };
+ROUTES['service-edit'] = { auth: true, role: 'provider', fn: async (ctx, tok) => {
+  const id = ctx.params[0]; let s = null; if (id) { s = await dbGet('services', id); if (stale(tok)) return; if (!s || s.providerId !== S.user.id) { $('#view').innerHTML = `<div class="container page">${emptyBox('file-x', 'الخدمة غير موجودة', 'لا يمكن العثور على هذه الخدمة في حسابك.', `<a class="btn btn-p btn-sm" href="#/services">خدماتي</a>`)}</div>`; refreshIcons(); return; } }
+  S.page.sid = id || null; const p = S.provider;
+  $('#view').innerHTML = `<div class="container page" style="max-width:820px">${backLink('/services', 'خدماتي')}<div class="pagehead"><h1>${s ? 'تعديل الخدمة' : 'إضافة خدمة'}</h1></div><div class="alert err hide" id="form-err" style="margin-bottom:14px"></div>
+  <form class="card formgrid" data-form="service" novalidate>${field('title', 'اسم الخدمة', input('title', { v: s?.title, attrs: 'maxlength="90"' }), { req: true })}
+   <div class="grid2">${field('cat', 'التصنيف', dd({ name: 'cat', options: catOpts(false), value: s?.categoryId || p.mainCategoryId, placeholder: 'اختر التصنيف' }), { req: true })}${field('ptype', 'طريقة التسعير', dd({ name: 'ptype', options: PRICE_TYPES, value: s?.priceType || 'fixed', onChange: v => $('[data-f="price"]')?.classList.toggle('hide', v === 'quote') }), { req: true })}</div>
+   ${field('price', 'السعر بالجنيه', input('price', { type: 'number', v: s?.price ?? '', attrs: 'min="0" inputmode="numeric"' }), { req: true })}
+   ${field('desc', 'وصف الخدمة', textarea('desc', { v: s?.description, attrs: 'maxlength="1000"' }), { req: true })}
+   <div class="grid2">${field('gov', 'المحافظة', dd({ name: 'gov', options: govOpts, value: s?.governorate || p.governorate, search: true }))}${field('areas', 'مناطق تقديم الخدمة', input('areas', { v: (s?.areas || p.serviceAreas || []).join('، '), ph: 'افصل بينها بفاصلة' }))}</div>
+   <div class="field"><span class="label">صور الأعمال (حتى 3)</span><div id="f-simg"></div></div>
+   ${field('status', 'حالة النشر', dd({ name: 'status', options: [{ value: 'published', label: 'منشورة', desc: 'تظهر للعملاء في ملفك' }, { value: 'draft', label: 'غير منشورة', desc: 'مخفية عن العملاء' }], value: s?.status || 'published' }))}
+   <div class="row" style="justify-content:flex-end"><button class="btn btn-p btn-lg" type="submit">${ic('save')}${s ? 'حفظ التعديلات' : 'إضافة الخدمة'}</button></div></form></div>`;
+  if ((s?.priceType) === 'quote') $('[data-f="price"]').classList.add('hide'); refreshIcons();
+  S.page.simg = imgField('f-simg', { max: 3, dim: 900, maxChars: 120000, initial: s?.imagesBase64 || [] });
+} };
+FORMS.service = async form => {
+  const btn = form.querySelector('[type=submit]'); clearErrs(form); $('#form-err').classList.add('hide'); const v = { title: val('title'), cat: ddv('cat'), pt: ddv('ptype'), price: val('price'), desc: val('desc'), gov: ddv('gov'), areas: val('areas'), status: ddv('status') || 'published' }; let bad = false; const E = (k, m) => { setErr(k, m); bad = true; };
+  if (v.title.length < 3) E('title', 'اكتب اسم الخدمة'); if (!v.cat) E('cat', 'اختر التصنيف'); if (!v.pt) E('ptype', 'اختر طريقة التسعير'); if (v.pt !== 'quote' && (!v.price || isNaN(+v.price) || +v.price < 0)) E('price', 'أدخل سعرًا صحيحًا'); if (v.desc.length < 10) E('desc', 'اكتب وصفًا لا يقل عن 10 أحرف'); if (bad) return focusFirstErr();
+  const imgs = S.page.simg; if (imgs.chars() > 380000) return showFormErr('حجم الصور كبير. احذف صورة أو اختر صورًا أصغر.');
+  await withLoading(btn, 'جارٍ الحفظ', async () => {
+    try {
+      const data = { providerId: S.user.id, title: v.title, categoryId: v.cat, description: v.desc, price: v.pt === 'quote' ? null : +v.price, priceType: v.pt, imagesBase64: imgs.data(), governorate: v.gov, areas: v.areas.split(/[،,]/).map(x => x.trim()).filter(Boolean), status: v.status };
+      if (S.page.sid) await dbUpdate(['services', S.page.sid], data); else await dbAdd('services', { ...data, updatedAt: serverTimestamp() });
+      await syncProviderServices(S.user.id); showToast(S.page.sid ? 'تم حفظ التعديلات' : 'تمت إضافة الخدمة', 'ok'); navigateTo('/services');
+    } catch (e) { showFormErr(friendlyError(e)); }
+  });
+};
+ROUTES.service = { fn: async (ctx, tok) => {
+  const s = await dbGet('services', ctx.params[0]); if (stale(tok)) return; const p = s && await dbGet('providers', s.providerId); if (stale(tok)) return;
+  if (!s || !p || (s.status !== 'published' && S.user?.id !== s.providerId)) { $('#view').innerHTML = `<div class="container page">${emptyBox('file-x', 'الخدمة غير متاحة', 'هذه الخدمة غير موجودة أو غير منشورة.', `<a class="btn btn-p btn-sm" href="#/search">استكشف الخدمات</a>`)}</div>`; refreshIcons(); return; }
+  const own = S.user?.id === p.id;
+  $('#view').innerHTML = `<div class="container page" style="max-width:860px">${backLink(own ? '/services' : '/provider/' + p.id, 'رجوع')}<div class="card"><div class="row between wrap"><div><h1 style="font-size:1.5rem">${esc(s.title)}</h1><div class="meta" style="margin-top:6px"><span>${ic(catOf(s.categoryId)?.icon || 'wrench')}${esc(catOf(s.categoryId)?.name || '')}</span>${s.governorate ? `<span>${ic('map-pin')}${esc(s.governorate)}</span>` : ''}${s.status !== 'published' ? '<span class="badge mute">غير منشورة</span>' : ''}</div></div>${favBtn('service', s.id)}</div><div style="margin:14px 0"><span class="badge ok" style="font-size:.95rem;padding:4px 16px">${priceLabel(s)}</span></div><p style="white-space:pre-wrap">${esc(s.description)}</p>${(s.areas || []).length ? `<div class="chips" style="margin-top:12px">${s.areas.map(a => `<span class="badge info">${esc(a)}</span>`).join('')}</div>` : ''}${(s.imagesBase64 || []).length ? `<div class="gal" style="margin-top:14px">${s.imagesBase64.map((x, i) => `<button data-act="lbi" data-i="${i}"><img src="${x}" alt=""></button>`).join('')}</div>` : ''}
+  <div class="card flat row" style="margin-top:18px">${avatar(p.photoBase64, p.name, 52)}<div class="grow"><b>${esc(p.name)}</b><div class="sm muted">${esc(p.shopName || '')}</div></div><a class="btn btn-n btn-sm" href="#/provider/${p.id}">الملف الشخصي</a>${(!own && (!S.user || isCustomer())) ? `<a class="btn btn-p btn-sm" href="#/request/${p.id}?service=${s.id}">اطلب الخدمة</a>` : ''}</div></div></div>`;
+  S.page.imgs = s.imagesBase64 || []; refreshIcons();
+} };
+
+/* ===================== 24. المفضلة ===================== */
+ROUTES.favorites = { auth: true, role: 'customer', fn: async (ctx, tok) => {
+  $('#view').innerHTML = `<div class="container page"><div class="pagehead"><h1>المفضلة</h1></div><div id="fl">${skeletons(3, 170)}</div></div>`;
+  const favs = await dbList('favorites', where('userId', '==', S.user.id), limit(60)); if (stale(tok)) return;
+  const items = (await Promise.all(favs.map(async f => { const d = await dbGet(f.itemType === 'provider' ? 'providers' : 'services', f.itemId).catch(() => null); return d ? { ...f, d } : null; }))).filter(Boolean); if (stale(tok)) return;
+  const provs = items.filter(i => i.itemType === 'provider'), svcs = items.filter(i => i.itemType === 'service');
+  $('#fl').innerHTML = items.length ? `${provs.length ? `<h3 style="margin-bottom:10px">الحرفيون</h3><div class="pgrid" style="margin-bottom:24px">${provs.map(i => providerCard(i.d)).join('')}</div>` : ''}${svcs.length ? `<h3 style="margin-bottom:10px">الخدمات</h3><div class="pgrid">${svcs.map(i => `<article class="pcard" data-fav-card>${favBtn('service', i.d.id)}<h3 style="padding-inline-end:40px">${esc(i.d.title)}</h3><div class="sm muted">${esc((i.d.description || '').slice(0, 100))}</div><span class="badge ok" style="align-self:flex-start">${priceLabel(i.d)}</span><div class="acts"><a class="btn btn-n btn-sm" href="#/service/${i.d.id}">تفاصيل الخدمة</a><a class="btn btn-p btn-sm" href="#/provider/${i.d.providerId}">الحرفي</a></div></article>`).join('')}</div>` : ''}` : emptyBox('heart', 'لا توجد عناصر في المفضلة', 'اضغط على القلب في أي حرفي أو خدمة لحفظها هنا.', `<a class="btn btn-p btn-sm" href="#/search">استكشف الحرفيين</a>`); refreshIcons();
+} };
+
+/* ===================== 26. الإشعارات ===================== */
+ROUTES.notifications = { auth: true, fn: async (ctx, tok) => {
+  $('#view').innerHTML = `<div class="container page" style="max-width:760px"><div class="pagehead"><h1>الإشعارات</h1><button class="btn btn-n btn-sm" data-act="nread-all">${ic('check-check')}تعليم الكل كمقروء</button></div><div id="nl"><div class="sk" style="height:200px"></div></div></div>`; refreshIcons();
+  dbListenCol('notifications', [where('userId', '==', S.user.id), limit(100)], a => { a.sort((x, y) => tsMs(y.createdAt) - tsMs(x.createdAt)); S.page.nots = a; $('#nl').innerHTML = a.length ? `<div class="list">${a.map(notifRow).join('')}</div>` : emptyBox('bell', 'لا توجد إشعارات', 'ستصلك هنا تحديثات الطلبات والرسائل.'); refreshIcons(); }, e => { $('#nl').innerHTML = errorBox(friendlyError(e)); refreshIcons(); });
+} };
+ACT['nread-all'] = async el => { const un = (S.page.nots || []).filter(n => !n.isRead); if (!un.length) return showToast('لا توجد إشعارات غير مقروءة', 'info'); await withLoading(el, 'جارٍ التحديث', async () => { try { const b = writeBatch(db); un.forEach(n => b.update(dref('notifications', n.id), { isRead: true })); await b.commit(); } catch (e) { showToast(friendlyError(e), 'err'); } }); };
+
+/* ===================== 27. الملف الشخصي والإعدادات ===================== */
+ROUTES.profile = { auth: true, fn: async (ctx, tok) => {
+  const u = S.user, p = S.provider; const edit = ctx.query.edit === '1';
+  const kv = (k, v) => `<div class="kv"><span>${k}</span><span>${v || '—'}</span></div>`;
+  if (!edit) {
+    $('#view').innerHTML = `<div class="container page" style="max-width:760px"><div class="pagehead"><h1>حسابي</h1><a class="btn btn-o" href="#/profile?edit=1">${ic('pencil')}تعديل البيانات</a></div><div class="card"><div class="row" style="margin-bottom:14px">${avatar(u.photoBase64, u.name, 80)}<div><h2 style="font-size:1.3rem">${esc(u.name)}</h2><span class="badge ok">${isProvider() ? 'حرفي / مقدم خدمة' : 'عميل'}</span></div></div>${kv('رقم الهاتف', `<span class="num">${esc(u.phone)}</span>`)}${kv('البريد الإلكتروني', esc(u.email))}${kv('المحافظة', esc(u.governorate))}${kv('المنطقة', esc(u.area))}${kv('نبذة', esc(u.bio))}</div>
+    ${isProvider() && p ? `<div class="card" style="margin-top:16px"><h3>بيانات النشاط</h3>${kv('اسم النشاط', esc(p.shopName))}${kv('التخصص', esc(catOf(p.mainCategoryId)?.name))}${kv('العنوان', esc(p.address))}<div class="row wrap" style="margin-top:12px"><a class="btn btn-o btn-sm" href="#/provider-setup">تعديل ملف النشاط</a><a class="btn btn-n btn-sm" href="#/services">الخدمات</a><a class="btn btn-n btn-sm" href="#/provider/${u.id}">ملفي العام</a></div></div>` : `<div class="row wrap" style="margin-top:16px"><a class="btn btn-n" href="#/favorites">${ic('heart')}المفضلة</a><a class="btn btn-n" href="#/notifications">${ic('bell')}الإشعارات</a></div>`}
+    <button class="btn btn-do" style="margin-top:20px" data-act="logout">${ic('log-out')}تسجيل الخروج</button></div>`; refreshIcons(); return;
+  }
+  $('#view').innerHTML = `<div class="container page" style="max-width:760px">${backLink('/profile', 'حسابي')}<div class="pagehead"><h1>تعديل البيانات</h1></div><div class="alert err hide" id="form-err" style="margin-bottom:14px"></div><form class="card formgrid" data-form="profile" novalidate><div class="field"><span class="label">الصورة الشخصية</span><div id="f-av"></div></div><div class="grid2">${field('name', 'الاسم', input('name', { v: u.name }), { req: true })}${field('phone', 'رقم الهاتف', input('phone', { type: 'tel', v: u.phone, attrs: 'dir="ltr" style="text-align:right"' }), { req: true })}</div>${field('email', 'البريد الإلكتروني', input('email', { type: 'email', v: u.email, attrs: 'dir="ltr" style="text-align:right"' }))}<div class="grid2">${field('gov', 'المحافظة', dd({ name: 'gov', options: govOpts, value: u.governorate, search: true }), { req: true })}${field('area', 'المنطقة', input('area', { v: u.area }), { req: true })}</div>${field('bio', 'نبذة', textarea('bio', { v: u.bio, attrs: 'maxlength="500"' }))}<div class="row" style="justify-content:flex-end"><a class="btn btn-n" href="#/profile">إلغاء</a><button class="btn btn-p" type="submit">${ic('save')}حفظ التعديلات</button></div></form></div>`;
+  S.page.av = imgField('f-av', { max: 1, dim: 360, maxChars: 55000, initial: u.photoBase64 ? [u.photoBase64] : [], label: 'رفع صورة' }); refreshIcons();
+} };
+FORMS.profile = async form => {
+  const btn = form.querySelector('[type=submit]'); clearErrs(form); $('#form-err').classList.add('hide'); const u = S.user; const v = { name: val('name'), phone: normPhone(val('phone')), email: val('email'), gov: ddv('gov'), area: val('area'), bio: val('bio') }; let bad = false; const E = (k, m) => { setErr(k, m); bad = true; };
+  if (v.name.length < 3) E('name', 'اكتب اسمك'); if (!isPhone(v.phone)) E('phone', 'أدخل رقم هاتف مصري صحيحًا'); if (v.email && !isEmail(v.email)) E('email', 'صيغة البريد غير صحيحة'); if (!v.gov) E('gov', 'اختر المحافظة'); if (!v.area) E('area', 'اكتب المنطقة'); if (bad) return focusFirstErr();
+  await withLoading(btn, 'جارٍ الحفظ', async () => {
+    try {
+      if (v.phone !== u.phone) { const ex = await dbList('users', where('phone', '==', v.phone), limit(1)); if (ex.length && ex[0].id !== u.id) { setErr('phone', 'هذا الرقم مستخدم في حساب آخر'); return focusFirstErr(); } }
+      const photo = S.page.av.data()[0] || ''; await dbUpdate(['users', u.id], { name: v.name, phone: v.phone, email: v.email, governorate: v.gov, area: v.area, bio: v.bio, photoBase64: photo });
+      if (isProvider() && S.provider) { await dbUpdate(['providers', u.id], { name: v.name, photoBase64: photo, governorate: v.gov, area: v.area }); S.provider = await dbGet('providers', u.id); }
+      S.user = await dbGet('users', u.id); S.userCache.delete(u.id); showToast('تم حفظ التعديلات', 'ok'); navigateTo('/profile');
+    } catch (e) { showFormErr(friendlyError(e)); }
+  });
+};
+
+/* ===================== التشغيل ===================== */
+ROUTES.home.fn = ROUTES.home.fn;
+async function seedCategories() {
+  try { if (await dbGet('categories', CATS[0].id)) return; const b = writeBatch(db); CATS.forEach((c, i) => b.set(dref('categories', c.id), { name: c.name, description: c.desc, icon: c.icon, sortOrder: i + 1, active: true })); await b.commit(); } catch (e) { console.info('categories seed skipped', e.code || e); }
+}
+(async function boot() {
+  $('#view').innerHTML = `<div class="container page">${skeletons(3, 160)}</div>`;
+  await loadSession(); if (S.sessionErr) showToast('تعذر استعادة جلستك. تحقق من الاتصال.', 'warn');
+  if (!location.hash) location.hash = '#/home'; await renderPage(); seedCategories();
+})();
+
+</script>
+</body>
+</html>
